@@ -11,7 +11,7 @@ setInterval(function () {
     var s = date.getSeconds();
     if (h === 0 && m === 0 && s === 0)
         jsonObj = {}
-}, date)
+}, 0)
 
 bot.on("message", function (e) {
     if (e.raw_message === ".rd")
