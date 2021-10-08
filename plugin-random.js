@@ -3,11 +3,14 @@ const { segment } = require("oicq")
 const { bot } = require("./index")
 
 var jsonObj = {}
-var date = new Date()
-date.setHours(0, 0, 0, 0)
 
 setInterval(function () {
-    jsonObj = {}
+    var date = new Date()
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var s = date.getSeconds();
+    if (h === 0 && m === 0 && s === 0)
+        jsonObj = {}
 }, date)
 
 bot.on("message", function (e) {
