@@ -125,14 +125,14 @@ bot.on("message", function (e) {
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 今天的运气：" + num
+                    " 主人今天的运气值为：" + num + "！新的一天要加油哦～"
                 ]
             )
         } else {
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 今天的运气：" + jsonObj[name]
+                    " 别试啦，今天的运气值为" + jsonObj[name]
                 ]
             )
         }
@@ -154,10 +154,32 @@ bot.on("message", function (e) {
         var num = getRandomIntInclusive(0, 21)
         var position = getRandomIntInclusive(0, 1)
 
+        if (num != 13 && num != 15 && num != 16 && num != 18) {
+            if (position == 0) {
+                var words = " 恭喜你呢，主人！你抽到了正位。希望能给你带来好运！"
+            } else {
+                var words = " 很遗憾，主人你抽到了逆位呢。不过我会帮主人再抽一次的！下一次一定是正位！"
+            }
+        } else if (num == 13 && num == 15 && num == 18) {
+            if (position == 1) {
+                var words = " 恭喜你呢，主人！你抽到了逆位。希望能给你带来好运！"
+            } else {
+                var words = " 很遗憾，主人你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
+            }
+        } else {
+            var words = " 塔！主人你竟然抽到了如此罕见的牌。从某种意义上来说主人你的运气也很好呢，哼哼～"
+        }
+
         e.reply(
             [
                 segment.at(e.user_id, '@' + e.sender.nickname, false),
-                " " + tarots[num.toString()][position]
+                words
+            ]
+        )
+
+        e.reply(
+            [
+                '' + tarots[num.toString()][position]
             ]
         )
     }
