@@ -17,9 +17,17 @@ bot.on("system.login.qrcode", function (e) {
 
 exports.bot = bot
 
-// template plugins
+const pixivAppApi = require("pixiv-app-api")
+
+const pixiv = new pixivAppApi("2445743081@qq.com", "xtjjim123!", {
+	camelcaseKeys: true,
+})
+
+exports.pixiv = pixiv
+
 require("./plugin-hello") //hello world
 require("./plugin-image") //发送图文和表情
 require("./plugin-request") //加群和好友
 require("./plugin-random") //骰娘的功能
+require("./plugin-pixiv") //pixiv的功能
 require("./plugin-online") //监听上线事件
