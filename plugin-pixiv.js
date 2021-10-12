@@ -9,15 +9,10 @@ bot.on("message", function (e) {
             .then(function (data) {
                 return data.json()
             }).then(function (data) {
-                var reply = `色图来了！嘿嘿嘿～
-                             作者：${data["data"][0]["author"]}
-                             title：${data["data"][0]["title"]}
-                             pid：${data["data"][0]["pid"]}
-                             r18：${data["data"][0]["r18"]}
-                             链接：${data["data"][0]["urls"]["original"]}`
+                var reply = `色图来了！嘿嘿嘿～\n作者：${data["data"][0]["author"]}\ntitle：${data["data"][0]["title"]}\npid：${data["data"][0]["pid"]}\nr18：${data["data"][0]["r18"]}\n链接：${data["data"][0]["urls"]["original"]}`
                 e.reply(
                     [
-                        "" + reply
+                        reply
                     ]
                 )
                 e.reply(
@@ -37,26 +32,28 @@ bot.on("message", function (e) {
             r18 = "&r18=1"
         }
         var url = 'https://api.lolicon.app/setu/v2?tag=' + tags + r18
+
         fetch(url)
             .then(function (data) {
                 return data.json()
             }).then(function (data) {
-                var reply = `色图来了！嘿嘿嘿～
-                             作者：${data["data"][0]["author"]}
-                             title：${data["data"][0]["title"]}
-                             pid：${data["data"][0]["pid"]}
-                             r18：${data["data"][0]["r18"]}
-                             链接：${data["data"][0]["urls"]["original"]}`
+                var reply = `色图来了！嘿嘿嘿～\n作者：${data["data"][0]["author"]}\ntitle：${data["data"][0]["title"]}\npid：${data["data"][0]["pid"]}\nr18：${data["data"][0]["r18"]}\n链接：${data["data"][0]["urls"]["original"]}`
                 e.reply(
                     [
-                        "" + reply
+                        reply
                     ]
                 )
                 e.reply(
                     [
                         segment.image(data["data"][0]["urls"]["original"])
                     ]
-                )
+                ).then(function (results) {
+                    if (r18 === "&r18=1") {
+                        setTimeout(function () {
+                            bot.deleteMsg(results["data"]["message_id"])
+                        }, 10000)
+                    }
+                })
             })
     }
 })

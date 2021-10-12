@@ -1,5 +1,6 @@
 "use strict"
 const { segment } = require("oicq")
+const { measureMemory } = require("vm")
 const { bot } = require("./index")
 
 var jsonObj = {}
@@ -105,7 +106,7 @@ setInterval(function () {
 }, 0)
 
 bot.on("message", function (e) {
-    if (e.raw_message === ".rd")
+    if (e.raw_message === ".rd" || e.raw_message === "。rd")
         e.reply(
             [
                 segment.at(e.user_id, '@' + e.sender.nickname, false),
@@ -125,14 +126,14 @@ bot.on("message", function (e) {
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 主人今天的运气值为：" + num + "！新的一天要加油哦～"
+                    " 刀客塔今天的运气值为：" + num + "！新的一天要加油哦～"
                 ]
             )
         } else {
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 别试啦，今天的运气值为" + jsonObj[name]
+                    " 别试啦，今天的运气值为" + jsonObj[name] + "！刀客塔，还有很多工作没做，还不能休息哦。"
                 ]
             )
         }
@@ -140,7 +141,7 @@ bot.on("message", function (e) {
 })
 
 bot.on("message", function (e) {
-    if (e.raw_message.startsWith(".rd "))
+    if (e.raw_message.startsWith(".rd ") || e.raw_message.startsWith("。rd "))
         e.reply(
             [
                 segment.at(e.user_id, '@' + e.sender.nickname, false),
@@ -156,18 +157,18 @@ bot.on("message", function (e) {
 
         if (num != 13 && num != 15 && num != 16 && num != 18) {
             if (position == 0) {
-                var words = " 恭喜你呢，主人！你抽到了正位。希望能给你带来好运！"
+                var words = " 恭喜你呢，刀客塔！你抽到了正位。希望能给你带来好运！"
             } else {
-                var words = " 很遗憾，主人你抽到了逆位呢。不过我会帮主人再抽一次的！下一次一定是正位！"
+                var words = " 很遗憾，刀客塔你抽到了逆位呢。不过我会帮主人再抽一次的！下一次一定是正位！"
             }
         } else if (num == 13 && num == 15 && num == 18) {
             if (position == 1) {
-                var words = " 恭喜你呢，主人！你抽到了逆位。希望能给你带来好运！"
+                var words = " 恭喜你呢，刀客塔！你抽到了逆位。希望能给你带来好运！"
             } else {
-                var words = " 很遗憾，主人你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
+                var words = " 很遗憾，刀客塔你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
             }
         } else {
-            var words = " 塔！主人你竟然抽到了如此罕见的牌。从某种意义上来说主人你的运气也很好呢，哼哼～"
+            var words = " 塔！刀客塔你竟然抽到了如此罕见的牌。从某种意义上来说主人你的运气也很好呢，哼哼～"
         }
 
         e.reply(
@@ -180,6 +181,54 @@ bot.on("message", function (e) {
         e.reply(
             [
                 '' + tarots[num.toString()][position]
+            ]
+        )
+    }
+})
+
+bot.on("message", function (e) {
+    if (e.raw_message === "。rhd" || e.raw_message === ".rhd") {
+        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：" + getRandomIntInclusive(1, 100))
+    }
+})
+
+bot.on("message", function (e) {
+    if (e.raw_message.startsWith("。rhd ") || e.raw_message.startsWith(".rhd ")) {
+        var num = e.raw_message.replace(/[^0-9]/ig, "")
+        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：" + getRandomIntInclusive(1, num))
+    }
+})
+
+bot.on("message", function (e) {
+    if (e.raw_message.startsWith("。ra") || e.raw_message.startsWith(".ra")) {
+        var reply = ""
+        var num = parseInt(e.raw_message.replace(/[^0-9]/ig, ""))
+        var measureNum = getRandomIntInclusive(1, 100)
+        var bigFailureNum = 96
+        var skill = e.raw_message.substr(3).replace(/[0-9]/ig, "")
+        var replyWords = "普通成功"
+
+        if (num >= 60)
+            bigFailureNum = 100
+
+        if (num < measureNum) {
+            replyWords = "普通失败"
+            if (measureNum >= bigFailureNum)
+                replyWords = "大失败"
+        } else {
+            if (measureNum < num / 2)
+                replyWords = "困难成功"
+            if (measureNum < num / 5)
+                replyWords = "极难成功"
+            if (measureNum == 1)
+                replyWords = "大成功"
+        }
+        reply = e.sender.nickname + "进行的数值鉴定结果:1d100=" + measureNum + "/" + num + " " + skill + replyWords
+        if (Number.isNaN(num))
+            reply = "刀客塔，我听不懂你在说什么，是我不能理解的命令呢?"
+        e.reply(
+            [
+                reply
             ]
         )
     }
