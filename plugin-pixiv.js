@@ -34,8 +34,6 @@ bot.on("message", function (e) {
         }
         var url = 'https://api.lolicon.app/setu/v2?tag=' + tags + r18
 
-        console.log(url)
-
         fetch(url)
             .then(function (data) {
                 return data.json()
