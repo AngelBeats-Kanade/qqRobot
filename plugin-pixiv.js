@@ -30,8 +30,11 @@ bot.on("message", function (e) {
         var r18 = "&r18=0"
         if (tags.search("r18") != -1) {
             r18 = "&r18=1"
+            tags = tags.replace("|r18", "")
         }
         var url = 'https://api.lolicon.app/setu/v2?tag=' + tags + r18
+
+        console.log(url)
 
         fetch(url)
             .then(function (data) {
