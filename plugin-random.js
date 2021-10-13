@@ -1,6 +1,5 @@
 "use strict"
 const { segment } = require("oicq")
-const { measureMemory } = require("vm")
 const { bot } = require("./index")
 
 var jsonObj = {}
