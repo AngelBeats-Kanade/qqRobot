@@ -23,3 +23,4 @@ require("./plugin-request") //加群和好友
 require("./plugin-random") //骰娘的功能
 require("./plugin-pixiv") //pixiv的功能
 require("./plugin-online") //监听上线事件
+require("./plugin-setUpCharacters")

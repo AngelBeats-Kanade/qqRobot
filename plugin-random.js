@@ -1,6 +1,8 @@
 "use strict"
 const { segment } = require("oicq")
 const { bot } = require("./index")
+const mock = require("mockjs")
+const random = mock.Random
 
 var jsonObj = {}
 
@@ -105,16 +107,6 @@ setInterval(function () {
 }, 0)
 
 bot.on("message", function (e) {
-    if (e.raw_message === ".rd" || e.raw_message === "。rd")
-        e.reply(
-            [
-                segment.at(e.user_id, '@' + e.sender.nickname, false),
-                " " + getRandomIntInclusive(1, 100)
-            ]
-        )
-})
-
-bot.on("message", function (e) {
     if (e.raw_message === ".jrrp" || e.raw_message === "。jrrp") {
         var name = e.sender.nickname
 
@@ -140,13 +132,44 @@ bot.on("message", function (e) {
 })
 
 bot.on("message", function (e) {
-    if (e.raw_message.startsWith(".rd ") || e.raw_message.startsWith("。rd "))
+    if (e.raw_message === ".rd" || e.raw_message === "。rd")
         e.reply(
             [
                 segment.at(e.user_id, '@' + e.sender.nickname, false),
-                " " + getRandomIntInclusive(1, parseInt(e.raw_message.replace(/[^0-9]/ig, "")))
+                " 刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100)
             ]
         )
+
+    if (e.raw_message.startsWith(".rd ") || e.raw_message.startsWith("。rd ")) {
+        var numbers = e.raw_message.substr(4)
+        var flexNum = 0
+        var measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
+        var randomNum = getRandomIntInclusive(1, measureNum)
+        var reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}=${randomNum}`
+
+        if (numbers.indexOf("+") != -1) {
+            flexNum = numbers.split("+")[1]
+            measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ""))
+            randomNum = getRandomIntInclusive(1, measureNum)
+            var allNum = parseInt(flexNum) + randomNum
+            reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}`
+        }
+
+        if (numbers.indexOf("-") != -1) {
+            flexNum = numbers.split("-")[1]
+            measureNum = parseInt(numbers.split("-")[0].replace(/[^0-9]/ig, ""))
+            randomNum = getRandomIntInclusive(1, measureNum)
+            var allNum = randomNum - parseInt(flexNum)
+            reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}-${flexNum}=${randomNum}-${flexNum}=${allNum}`
+        }
+
+        e.reply(
+            [
+                segment.at(e.user_id, '@' + e.sender.nickname, false),
+                " " + reply
+            ]
+        )
+    }
 })
 
 bot.on("message", function (e) {
@@ -185,46 +208,91 @@ bot.on("message", function (e) {
     }
 })
 
-bot.on("message", function (e) {
-    if (e.raw_message === "。rhd" || e.raw_message === ".rhd") {
-        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：" + getRandomIntInclusive(1, 100))
-    }
-})
 
 bot.on("message", function (e) {
+    if (e.raw_message === "。rhd" || e.raw_message === ".rhd") {
+        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D100=" + getRandomIntInclusive(1, 100))
+    }
+
     if (e.raw_message.startsWith("。rhd ") || e.raw_message.startsWith(".rhd ")) {
         var num = e.raw_message.replace(/[^0-9]/ig, "")
-        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：" + getRandomIntInclusive(1, num))
+        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D" + num + "=" + getRandomIntInclusive(1, num))
     }
 })
 
 bot.on("message", function (e) {
     if (e.raw_message.startsWith("。ra") || e.raw_message.startsWith(".ra")) {
         var reply = ""
-        var num = parseInt(e.raw_message.replace(/[^0-9]/ig, ""))
-        var measureNum = getRandomIntInclusive(1, 100)
+        var numbers = e.raw_message.substr(4)
+        var flexNum = 0
+        var measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
+        var randomNum = getRandomIntInclusive(1, measureNum)
         var bigFailureNum = 96
-        var skill = e.raw_message.substr(3).replace(/[0-9]/ig, "")
-        var replyWords = "普通成功"
+        var skill = e.raw_message.substr(3).replace(/[0-9]|\+|\-/ig, "")
+        var replyWords = "成功"
 
-        if (num >= 60)
+        if (numbers.indexOf("+") != -1) {
+            flexNum = numbers.split("+")[1]
+            measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ""))
+            measureNum += parseInt(flexNum)
+            randomNum = getRandomIntInclusive(1, measureNum)
+        }
+
+        if (numbers.indexOf("-") != -1) {
+            flexNum = numbers.split("-")[1]
+            measureNum = parseInt(numbers.split("-")[0].replace(/[^0-9]/ig, ""))
+            measureNum -= parseInt(flexNum)
+            randomNum = getRandomIntInclusive(1, measureNum)
+        }
+
+        if ((measureNum - flexNum) >= 60)
             bigFailureNum = 100
 
-        if (num < measureNum) {
-            replyWords = "普通失败"
-            if (measureNum >= bigFailureNum)
+        if (measureNum < randomNum) {
+            replyWords = "失败"
+            if (randomNum >= bigFailureNum)
                 replyWords = "大失败"
         } else {
-            if (measureNum < num / 2)
+            if (randomNum <= measureNum / 2)
                 replyWords = "困难成功"
-            if (measureNum < num / 5)
+            if (randomNum <= measureNum / 5)
                 replyWords = "极难成功"
-            if (measureNum == 1)
+            if (randomNum == 1)
                 replyWords = "大成功"
         }
-        reply = e.sender.nickname + "进行的数值鉴定结果:1d100=" + measureNum + "/" + num + " " + skill + replyWords
-        if (Number.isNaN(num))
+
+        reply = e.sender.nickname + "进行的数值鉴定结果:1d100=" + randomNum + "/" + measureNum + " " + skill + replyWords
+
+        if (Number.isNaN(measureNum))
             reply = "刀客塔，我听不懂你在说什么，是我不能理解的命令呢?"
+        e.reply(
+            [
+                reply
+            ]
+        )
+    }
+})
+
+bot.on("message", function (e) {
+    if (e.raw_message.startsWith(".name ") || e.raw_message.startsWith("。name ")) {
+        var tags = e.raw_message.substr(6)
+        var num = parseInt(tags.replace(/[^0-9|^\.|^\-]/ig, ""))
+        var reply = ``
+        var names = {}
+        if (num <= 0) {
+            e.reply("刀客塔，.name后面跟着的数字一定要大于0哦")
+            return -1
+        }
+        if (tags.search("cn") != -1) {
+            names = getCnName(num)
+        } else {
+            names = getEnName(num)
+        }
+        reply = `刀客塔，你要的${num}个名字来了，分别为：\n`
+        for (var i = 0; i < num; i++) {
+            reply += `\n${i + 1}.`
+            reply += names[i]
+        }
         e.reply(
             [
                 reply
@@ -237,4 +305,20 @@ function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+}
+
+function getEnName(times) {
+    var names = {}
+    for (var i = 0; i < times; i++) {
+        names[i] = random.name()
+    }
+    return names
+}
+
+function getCnName(times) {
+    var names = {}
+    for (var i = 0; i < times; i++) {
+        names[i] = random.cname()
+    }
+    return names
 }

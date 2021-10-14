@@ -22,9 +22,7 @@ bot.on("message", function (e) {
                 )
             })
     }
-})
 
-bot.on("message", function (e) {
     if (e.raw_message.startsWith("来一张色图 ")) {
         var tags = e.raw_message.substr(6)
         var r18 = "&r18=0"
@@ -58,4 +56,3 @@ bot.on("message", function (e) {
             })
     }
 })
-
