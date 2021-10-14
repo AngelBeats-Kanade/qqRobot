@@ -226,7 +226,7 @@ bot.on("message", function (e) {
         var numbers = e.raw_message.substr(4)
         var flexNum = 0
         var measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
-        var randomNum = getRandomIntInclusive(1, measureNum)
+        var randomNum = getRandomIntInclusive(1, 100)
         var bigFailureNum = 96
         var skill = e.raw_message.substr(3).replace(/[0-9]|\+|\-/ig, "")
         var replyWords = "成功"
@@ -235,14 +235,12 @@ bot.on("message", function (e) {
             flexNum = numbers.split("+")[1]
             measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ""))
             measureNum += parseInt(flexNum)
-            randomNum = getRandomIntInclusive(1, measureNum)
         }
 
         if (numbers.indexOf("-") != -1) {
             flexNum = numbers.split("-")[1]
             measureNum = parseInt(numbers.split("-")[0].replace(/[^0-9]/ig, ""))
             measureNum -= parseInt(flexNum)
-            randomNum = getRandomIntInclusive(1, measureNum)
         }
 
         if ((measureNum - flexNum) >= 60)
@@ -304,7 +302,7 @@ bot.on("message", function (e) {
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+    return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
 }
 
 function getEnName(times) {
