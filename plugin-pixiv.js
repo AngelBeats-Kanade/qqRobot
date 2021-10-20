@@ -4,13 +4,66 @@ const { bot } = require("./index")
 const fetch = require("node-fetch")
 
 bot.on("message", function (e) {
-    if (e.raw_message === "来一张色图") {
+    if (e.raw_message === "来点二次元") {
         var randomNumber = getRandomInt(1, 10)
         var url = `https://www.pixiv.net/ranking.php?mode=daily&content=illust&p=${randomNumber}&format=json`
         fetch(url, {
             headers: {
                 'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
                 'referer': 'https://www.pixiv.net/ranking.php?mode=daily&content=illust'
+            }
+        }).then(function (data) {
+            return data.json()
+        }).then(function (data) {
+            randomNumber = getRandomInt(1, 50)
+            fetch(`https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}`)
+                .then(function (text) {
+                    return text.text()
+                }).then(function (text) {
+                    var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
+                    var page = data["contents"][randomNumber]["illust_page_count"]
+                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
+                    if (page == 1) {
+                        e.reply(
+                            [
+                                reply
+                            ]
+                        )
+                        e.reply(
+                            [
+                                segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4))
+                            ]
+                        )
+                    } else {
+                        reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：`
+                        for (var i = 1; i <= page; i++) {
+                            reply += `https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}-${i}` + picture.substr(-4, 4)
+                            reply += `\n`
+                        }
+                        e.reply(
+                            [
+                                reply
+                            ]
+                        )
+                        for (var i = 1; i <= page; i++) {
+                            e.reply(
+                                [
+                                    segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}-${i}` + picture.substr(-4, 4))
+                                ]
+                            )
+                        }
+                    }
+                })
+        })
+    }
+
+    if (e.raw_message === "来点色图") {
+        var randomNumber = getRandomInt(1, 10)
+        var url = `https://www.pixiv.net/ranking.php?mode=daily_r18&content=illust&p=${randomNumber}&format=json`
+        fetch(url, {
+            headers: {
+                'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'referer': 'https://www.pixiv.net/ranking.php?mode=daily_r18&content=illust'
             }
         }).then(function (data) {
             return data.json()
