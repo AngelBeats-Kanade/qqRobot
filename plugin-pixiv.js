@@ -5,22 +5,29 @@ const fetch = require("node-fetch")
 
 bot.on("message", function (e) {
     if (e.raw_message === "来一张色图") {
-        fetch('https://api.lolicon.app/setu/v2?tag=萝莉|少女&tag=白丝|黑丝&r18=0')
-            .then(function (data) {
-                return data.json()
-            }).then(function (data) {
-                var reply = `色图来了！嘿嘿嘿～\n作者：${data["data"][0]["author"]}\ntitle：${data["data"][0]["title"]}\npid：${data["data"][0]["pid"]}\nr18：${data["data"][0]["r18"]}\n链接：${data["data"][0]["urls"]["original"]}`
-                e.reply(
-                    [
-                        reply
-                    ]
-                )
-                e.reply(
-                    [
-                        segment.image(data["data"][0]["urls"]["original"])
-                    ]
-                )
-            })
+        var randomNumber = getRandomInt(1, 10)
+        var url = `https://www.pixiv.net/ranking.php?mode=daily&content=illust&p=${randomNumber}&format=json`
+        fetch(url, {
+            headers: {
+                'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+                'referer': 'https://www.pixiv.net/ranking.php?mode=daily&content=illust'
+            }
+        }).then(function (data) {
+            return data.json()
+        }).then(function (data) {
+            randomNumber = getRandomInt(1, 50)
+            var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\n链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}`
+            e.reply(
+                [
+                    reply
+                ]
+            )
+            e.reply(
+                [
+                    segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}`)
+                ]
+            )
+        })
     }
 
     if (e.raw_message.startsWith("来一张色图 ")) {
@@ -56,3 +63,9 @@ bot.on("message", function (e) {
             })
     }
 })
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
