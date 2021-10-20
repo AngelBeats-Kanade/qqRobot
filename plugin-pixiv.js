@@ -22,7 +22,7 @@ bot.on("message", function (e) {
                 }).then(function (text) {
                     var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
                     var page = data["contents"][randomNumber]["illust_page_count"]
-                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
+                    var reply = `二次元图片来了！\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
                     if (page == 1) {
                         e.reply(
                             [
@@ -35,7 +35,7 @@ bot.on("message", function (e) {
                             ]
                         )
                     } else {
-                        reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：`
+                        reply = `二次元图片来了！\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：`
                         for (var i = 1; i <= page; i++) {
                             reply += `https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}-${i}` + picture.substr(-4, 4)
                             reply += `\n`
