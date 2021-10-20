@@ -87,7 +87,11 @@ bot.on("message", function (e) {
                             [
                                 segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4))
                             ]
-                        )
+                        ).then(function (results) {
+                            setTimeout(function () {
+                                bot.deleteMsg(results["data"]["message_id"])
+                            }, 10000)
+                        })
                     } else {
                         reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：`
                         for (var i = 1; i <= page; i++) {
@@ -104,7 +108,11 @@ bot.on("message", function (e) {
                                 [
                                     segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}-${i}` + picture.substr(-4, 4))
                                 ]
-                            )
+                            ).then(function (results) {
+                                setTimeout(function () {
+                                    bot.deleteMsg(results["data"]["message_id"])
+                                }, 10000)
+                            })
                         }
                     }
                 })
