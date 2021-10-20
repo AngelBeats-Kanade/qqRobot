@@ -17,11 +17,14 @@ bot.on("message", function (e) {
         }).then(function (data) {
             randomNumber = getRandomInt(1, 50)
             fetch(`https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}`)
-                .then(function (data) {
-                    return data.text()
+                .then(function (text) {
+                    return text.text()
                 }).then(function (text) {
                     var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
-                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
+                    var page = ``
+                    if (data["contents"][randomNumber]["illust_page_count"] > 1)
+                        page = `-1`
+                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + page + picture.substr(-4, 4)
                     e.reply(
                         [
                             reply
@@ -29,7 +32,7 @@ bot.on("message", function (e) {
                     )
                     e.reply(
                         [
-                            segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4))
+                            segment.image(`https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}` + page + picture.substr(-4, 4))
                         ]
                     )
                 })
