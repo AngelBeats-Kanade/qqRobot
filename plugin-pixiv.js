@@ -58,7 +58,7 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message === "来点色图") {
-        var randomNumber = getRandomInt(1, 10)
+        var randomNumber = getRandomInt(1, 2)
         var url = `https://www.pixiv.net/ranking.php?mode=daily_r18&content=illust&p=${randomNumber}&format=json`
         fetch(url, {
             headers: {
