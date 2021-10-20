@@ -21,7 +21,7 @@ bot.on("message", function (e) {
                     return data.text()
                 }).then(function (text) {
                     var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
-                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.cat/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
+                    var reply = `色图来了！嘿嘿嘿～\n作者：${data["contents"][randomNumber]["user_name"]}\ntitle：${data["contents"][randomNumber]["title"]}\npid：${data["contents"][randomNumber]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][randomNumber]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][randomNumber]["illust_id"]}` + picture.substr(-4, 4)
                     e.reply(
                         [
                             reply
