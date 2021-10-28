@@ -22,7 +22,7 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith("来点二次元 ")) {
-        if (JSON.stringify(dailyPictures) == '{}')
+        if (JSON.stringify(dailyPictures) === '{}')
             fetchData()
 
         var tags = e.raw_message.substr(6)
@@ -30,7 +30,7 @@ bot.on("message", function (e) {
             tags = parseInt(tags)
             var page = Math.trunc(tags / 50) + 1
             var number = tags % 50
-            if (number == 0)
+            if (number === 0)
                 page -= 1
 
             getDailyPictureByNumber(e, 'daily', page, number)
@@ -40,7 +40,7 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith("来点色图 ")) {
-        if (JSON.stringify(dailyPictures) == '{}')
+        if (JSON.stringify(dailyPictures) === '{}')
             fetchData()
 
         var tags = e.raw_message.substr(5)
@@ -48,7 +48,7 @@ bot.on("message", function (e) {
             tags = parseInt(tags)
             var page = Math.trunc(tags / 50) + 1
             var number = tags % 50
-            if (number == 0)
+            if (number === 0)
                 page -= 1
 
             getDailyPictureByNumber(e, 'daily_r18', page, number)
@@ -70,7 +70,7 @@ function getRandomInt(min, max) {
 
 function getDailyPicture(e, r18) {
     var randomPage = getRandomInt(1, 10)
-    if (r18 == 'daily_r18')
+    if (r18 === 'daily_r18')
         randomPage = getRandomInt(1, 2)
     var randomNumber = getRandomInt(0, 49)
 
@@ -95,10 +95,10 @@ function getDailyPictureByNumber(e, r18, page, number) {
                         var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
                         var page = data["contents"][number - 1]["illust_page_count"]
                         var head = '二次元图片来了！'
-                        if (r18 == 'daily_r18')
+                        if (r18 === 'daily_r18')
                             head = '色图来了！嘿嘿嘿～'
                         var reply = `${head}\n作者：${data["contents"][number - 1]["user_name"]}\ntitle：${data["contents"][number - 1]["title"]}\npid：${data["contents"][number - 1]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][number - 1]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][number - 1]["illust_id"]}` + picture.substr(-4, 4)
-                        if (page == 1) {
+                        if (page === '1') {
                             e.reply(
                                 [
                                     reply
@@ -109,7 +109,7 @@ function getDailyPictureByNumber(e, r18, page, number) {
                                     segment.image(`https://pixiv.cat/${data["contents"][number - 1]["illust_id"]}` + picture.substr(-4, 4))
                                 ]
                             ).then(function (results) {
-                                if (r18 == 'daily_r18') {
+                                if (r18 === 'daily_r18') {
                                     setTimeout(function () {
                                         bot.deleteMsg(results["data"]["message_id"])
                                     }, 10000)
@@ -132,7 +132,7 @@ function getDailyPictureByNumber(e, r18, page, number) {
                                         segment.image(`https://pixiv.cat/${data["contents"][number - 1]["illust_id"]}-${i}` + picture.substr(-4, 4))
                                     ]
                                 ).then(function (results) {
-                                    if (r18 == 'daily_r18') {
+                                    if (r18 === 'daily_r18') {
                                         setTimeout(function () {
                                             bot.deleteMsg(results["data"]["message_id"])
                                         }, 10000)
@@ -148,10 +148,10 @@ function getDailyPictureByNumber(e, r18, page, number) {
                         var picture = text.match(/"original":"(.+?)"},"tags"/)[1]
                         var page = data["contents"][49]["illust_page_count"]
                         var head = '二次元图片来了！'
-                        if (r18 == 'daily_r18')
+                        if (r18 === 'daily_r18')
                             head = '色图来了！嘿嘿嘿～'
                         var reply = `${head}\n作者：${data["contents"][49]["user_name"]}\ntitle：${data["contents"][49]["title"]}\npid：${data["contents"][49]["user_id"]}\np站链接：https://www.pixiv.net/artworks/${data["contents"][49]["illust_id"]}\n国内直连链接：https://pixiv.re/${data["contents"][49]["illust_id"]}` + picture.substr(-4, 4)
-                        if (page == 1) {
+                        if (page === '1') {
                             e.reply(
                                 [
                                     reply
@@ -162,7 +162,7 @@ function getDailyPictureByNumber(e, r18, page, number) {
                                     segment.image(`https://pixiv.cat/${data["contents"][49]["illust_id"]}` + picture.substr(-4, 4))
                                 ]
                             ).then(function (results) {
-                                if (r18 == 'daily_r18') {
+                                if (r18 === 'daily_r18') {
                                     setTimeout(function () {
                                         bot.deleteMsg(results["data"]["message_id"])
                                     }, 10000)
@@ -185,7 +185,7 @@ function getDailyPictureByNumber(e, r18, page, number) {
                                         segment.image(`https://pixiv.cat/${data["contents"][49]["illust_id"]}-${i}` + picture.substr(-4, 4))
                                     ]
                                 ).then(function (results) {
-                                    if (r18 == 'daily_r18') {
+                                    if (r18 === 'daily_r18') {
                                         setTimeout(function () {
                                             bot.deleteMsg(results["data"]["message_id"])
                                         }, 10000)
@@ -215,7 +215,7 @@ function getDailyPictureByTag(e, r18, tag) {
                     var user = dailyPictures[title]["user"]
                     var tags = dailyPictures[title]["tags"]
                     var reply = `二次元图片来啦！\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
-                    if (page == 1) {
+                    if (page === '1') {
                         e.reply(
                             [
                                 reply
@@ -269,7 +269,7 @@ function getDailyPictureByTag(e, r18, tag) {
                     var user = dailyR18Pictures[title]["user"]
                     var tags = dailyR18Pictures[title]["tags"]
                     var reply = `色图来啦！\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
-                    if (page == 1) {
+                    if (page === '1') {
                         e.reply(
                             [
                                 reply

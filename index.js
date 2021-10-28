@@ -17,10 +17,11 @@ bot.on("system.login.qrcode", function (e) {
 
 exports.bot = bot
 
-require("./plugin-hello") //hello world
-require("./plugin-image") //发送图文和表情
+require("./plugin-hello") //hello
+// require("./plugin-image") //发送图文和表情
 require("./plugin-request") //加群和好友
 require("./plugin-random") //骰娘的功能
 require("./plugin-pixiv") //pixiv的功能
 require("./plugin-online") //监听上线事件
-require("./plugin-setUpCharacters")
+require("./plugin-arknights")//明日方舟相关插件
+// require("./plugin-setUpCharacters")//设置卡片属性的功能

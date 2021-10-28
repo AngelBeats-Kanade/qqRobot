@@ -178,13 +178,13 @@ bot.on("message", function (e) {
         var position = getRandomIntInclusive(0, 1)
 
         if (num != 13 && num != 15 && num != 16 && num != 18) {
-            if (position == 0) {
+            if (position === 0) {
                 var words = " 恭喜你呢，刀客塔！你抽到了正位。希望能给你带来好运！"
             } else {
                 var words = " 很遗憾，刀客塔你抽到了逆位呢。不过我会帮刀客塔再抽一次的！下一次一定是正位！"
             }
-        } else if (num == 13 || num == 15 || num == 18) {
-            if (position == 1) {
+        } else if (num === 13 || num === 15 || num === 18) {
+            if (position === 1) {
                 var words = " 恭喜你呢，刀客塔！你抽到了逆位。希望能给你带来好运！"
             } else {
                 var words = " 很遗憾，刀客塔你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
@@ -255,7 +255,7 @@ bot.on("message", function (e) {
                 replyWords = "困难成功"
             if (randomNum <= measureNum / 5)
                 replyWords = "极难成功"
-            if (randomNum == 1)
+            if (randomNum === 1)
                 replyWords = "大成功"
         }
 
