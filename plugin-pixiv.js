@@ -156,19 +156,21 @@ function getDailyPictureByTag(e, r18, tag) {
                                 reply
                             ]
                         )
+                        let messages = []
                         for (var i = 1; i <= page; i++) {
-                            e.reply(
-                                [
-                                    segment.image(`https://pixiv.cat/${id}-${i}` + picture.substr(-4, 4))
-                                ]
-                            ).then(function (results) {
-                                if (r18) {
-                                    setTimeout(function () {
-                                        bot.deleteMsg(results["data"]["message_id"])
-                                    }, 10000)
-                                }
-                            })
+                            messages[i - 1] = segment.image(`https://pixiv.cat/${id}-${i}` + picture.substr(-4, 4))
                         }
+                        bot.makeForwardMsg({ 'user_id': 2198526707, 'message': messages, 'nickname': '阿米娅' })
+                            .then(function (res) {
+                                e.reply(res.data)
+                                    .then(function (results) {
+                                        if (r18) {
+                                            setTimeout(function () {
+                                                bot.deleteMsg(results["data"]["message_id"])
+                                            }, 10000)
+                                        }
+                                    })
+                            })
                     }
                 })
             })
@@ -216,19 +218,21 @@ function fetchAPictureAndReply(title, r18, e) {
                         reply
                     ]
                 )
+                let messages = []
                 for (var i = 1; i <= page; i++) {
-                    e.reply(
-                        [
-                            segment.image(`https://pixiv.cat/${id}-${i}` + picture.substr(-4, 4))
-                        ]
-                    ).then(function (results) {
-                        if (r18) {
-                            setTimeout(function () {
-                                bot.deleteMsg(results["data"]["message_id"])
-                            }, 10000)
-                        }
-                    })
+                    messages[i - 1] = segment.image(`https://pixiv.cat/${id}-${i}` + picture.substr(-4, 4))
                 }
+                bot.makeForwardMsg({ 'user_id': 2198526707, 'message': messages, 'nickname': '阿米娅' })
+                    .then(function (res) {
+                        e.reply(res.data)
+                            .then(function (results) {
+                                if (r18) {
+                                    setTimeout(function () {
+                                        bot.deleteMsg(results["data"]["message_id"])
+                                    }, 10000)
+                                }
+                            })
+                    })
             }
         })
 }
