@@ -4,9 +4,9 @@ const { bot } = require("./index")
 const mock = require("mockjs")
 const random = mock.Random
 
-var jsonObj = {}
+let jsonObj = {}
 
-var tarots = {
+let tarots = {
     "0": [
         "【0】愚者正位：憧憬自然的地方、毫无目的地前行、喜欢尝试挑战新鲜事物、四处流浪。明知是毫无意义的冒险，错误的选择及失败的结果，却一意孤行，盲目地追求梦想而完全忽略现实；好冒险、寻梦人、不拘泥于传统的观念、自由奔放、一切从基础出发、四处流浪。自由恋爱、不顾及他人看法、以独特的方式获得成功、轻易坠入爱河、浪漫多彩的爱情、独特的恋人、等待交往机会。工作上具冒险心、追求新奇。热衷于事业或学业、以独特的方式取得意外的收获、由于好奇心对当前的学业产生浓厚的兴趣、把握重点、寻求捷径、倾向于自由的工作氛围、适合艺术类工作或从事自由职业。健康状况佳。旅行有意外收获。美好的梦想。",
         "【0】愚者逆位：冒险的行动，追求可能性，重视梦想，无视物质的损失，离开家园，过于信赖别人，为出外旅行而烦恼。心情空虚、轻率的恋情、无法长久持续的融洽感、不安的爱情的旅程、对婚姻感到束缚、彼此忽冷忽热、不顾众人反对坠入爱河、为恋人的负心所伤、感情不专一。工作缺乏稳定性、无责任。成绩一落千丈、没有耐心、行事缺乏计划、经常迟到、猜题错误导致考试失利、考前突击无法为你带来太大的效果。因不安定的生活而生病。不能放心的旅行。不能下决心、怪癖。不切实际。"
@@ -98,20 +98,20 @@ var tarots = {
 }
 
 setInterval(function () {
-    var date = new Date()
-    var h = date.getHours();
-    var m = date.getMinutes();
-    var s = date.getSeconds();
+    let date = new Date()
+    let h = date.getHours();
+    let m = date.getMinutes();
+    let s = date.getSeconds();
     if (h === 0 && m === 0 && s === 0)
         jsonObj = {}
 }, 0)
 
 bot.on("message", function (e) {
     if (e.raw_message === ".jrrp" || e.raw_message === "。jrrp") {
-        var name = e.sender.nickname
+        let name = e.sender.nickname
 
         if (!(name in jsonObj)) {
-            var num = getRandomIntInclusive(1, 100)
+            let num = getRandomIntInclusive(1, 100)
             jsonObj[name] = num + ""
 
             e.reply(
@@ -141,17 +141,17 @@ bot.on("message", function (e) {
         )
 
     if (e.raw_message.startsWith(".rd ") || e.raw_message.startsWith("。rd ")) {
-        var numbers = e.raw_message.substr(4)
-        var flexNum = 0
-        var measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
-        var randomNum = getRandomIntInclusive(1, measureNum)
-        var reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}=${randomNum}`
+        let numbers = e.raw_message.substr(4)
+        let flexNum = 0
+        let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
+        let randomNum = getRandomIntInclusive(1, measureNum)
+        let reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}=${randomNum}`
 
         if (numbers.indexOf("+") != -1) {
             flexNum = numbers.split("+")[1]
             measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ""))
             randomNum = getRandomIntInclusive(1, measureNum)
-            var allNum = parseInt(flexNum) + randomNum
+            let allNum = parseInt(flexNum) + randomNum
             reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}`
         }
 
@@ -159,7 +159,7 @@ bot.on("message", function (e) {
             flexNum = numbers.split("-")[1]
             measureNum = parseInt(numbers.split("-")[0].replace(/[^0-9]/ig, ""))
             randomNum = getRandomIntInclusive(1, measureNum)
-            var allNum = randomNum - parseInt(flexNum)
+            let allNum = randomNum - parseInt(flexNum)
             reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}-${flexNum}=${randomNum}-${flexNum}=${allNum}`
         }
 
@@ -174,23 +174,24 @@ bot.on("message", function (e) {
 
 bot.on("message", function (e) {
     if (e.raw_message === ".draw 单张塔罗牌" || e.raw_message === "。draw 单张塔罗牌") {
-        var num = getRandomIntInclusive(0, 21)
-        var position = getRandomIntInclusive(0, 1)
+        let num = getRandomIntInclusive(0, 21)
+        let position = getRandomIntInclusive(0, 1)
+        let words = ''
 
         if (num != 13 && num != 15 && num != 16 && num != 18) {
             if (position === 0) {
-                var words = " 恭喜你呢，刀客塔！你抽到了正位。希望能给你带来好运！"
+                words = " 恭喜你呢，刀客塔！你抽到了正位。希望能给你带来好运！"
             } else {
-                var words = " 很遗憾，刀客塔你抽到了逆位呢。不过我会帮刀客塔再抽一次的！下一次一定是正位！"
+                words = " 很遗憾，刀客塔你抽到了逆位呢。不过我会帮刀客塔再抽一次的！下一次一定是正位！"
             }
         } else if (num === 13 || num === 15 || num === 18) {
             if (position === 1) {
-                var words = " 恭喜你呢，刀客塔！你抽到了逆位。希望能给你带来好运！"
+                words = " 恭喜你呢，刀客塔！你抽到了逆位。希望能给你带来好运！"
             } else {
-                var words = " 很遗憾，刀客塔你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
+                words = " 很遗憾，刀客塔你抽到了正位呢。普遍来说正位代表好运，可惜这张牌是个例外。"
             }
         } else {
-            var words = " 塔！刀客塔你竟然抽到了如此罕见的牌。从某种意义上来说刀客塔你的运气也很好呢，哼哼～"
+            words = " 塔！刀客塔你竟然抽到了如此罕见的牌。从某种意义上来说刀客塔你的运气也很好呢，哼哼～"
         }
 
         e.reply(
@@ -215,21 +216,21 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith("。rhd ") || e.raw_message.startsWith(".rhd ")) {
-        var num = e.raw_message.replace(/[^0-9]/ig, "")
+        let num = e.raw_message.replace(/[^0-9]/ig, "")
         this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D" + num + "=" + getRandomIntInclusive(1, num))
     }
 })
 
 bot.on("message", function (e) {
     if (e.raw_message.startsWith("。ra") || e.raw_message.startsWith(".ra")) {
-        var reply = ""
-        var numbers = e.raw_message.substr(4)
-        var flexNum = 0
-        var measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
-        var randomNum = getRandomIntInclusive(1, 100)
-        var bigFailureNum = 96
-        var skill = e.raw_message.substr(3).replace(/[0-9]|\+|\-/ig, "")
-        var replyWords = "成功"
+        let reply = ""
+        let numbers = e.raw_message.substr(4)
+        let flexNum = 0
+        let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
+        let randomNum = getRandomIntInclusive(1, 100)
+        let bigFailureNum = 96
+        let skill = e.raw_message.substr(3).replace(/[0-9]|\+|\-/ig, "")
+        let replyWords = "成功"
 
         if (numbers.indexOf("+") != -1) {
             flexNum = numbers.split("+")[1]
@@ -273,10 +274,10 @@ bot.on("message", function (e) {
 
 bot.on("message", function (e) {
     if (e.raw_message.startsWith(".name ") || e.raw_message.startsWith("。name ")) {
-        var tags = e.raw_message.substr(6)
-        var num = parseInt(tags.replace(/[^0-9|^\.|^\-]/ig, ""))
-        var reply = ``
-        var names = {}
+        let tags = e.raw_message.substr(6)
+        let num = parseInt(tags.replace(/[^0-9|^\.|^\-]/ig, ""))
+        let reply = ``
+        let names = {}
         if (num <= 0) {
             e.reply("刀客塔，.name后面跟着的数字一定要大于0哦")
             return -1
@@ -287,7 +288,7 @@ bot.on("message", function (e) {
             names = getEnName(num)
         }
         reply = `刀客塔，你要的${num}个名字来了，分别为：\n`
-        for (var i = 0; i < num; i++) {
+        for (let i = 0; i < num; i++) {
             reply += `\n${i + 1}.`
             reply += names[i]
         }
@@ -306,16 +307,16 @@ function getRandomIntInclusive(min, max) {
 }
 
 function getEnName(times) {
-    var names = {}
-    for (var i = 0; i < times; i++) {
+    let names = {}
+    for (let i = 0; i < times; i++) {
         names[i] = random.name()
     }
     return names
 }
 
 function getCnName(times) {
-    var names = {}
-    for (var i = 0; i < times; i++) {
+    let names = {}
+    for (let i = 0; i < times; i++) {
         names[i] = random.cname()
     }
     return names

@@ -2,7 +2,7 @@
 const { segment } = require("oicq")
 const { bot } = require("./index")
 
-var roles = {
+let roles = {
     "Template": {
         "characters": [
             {
@@ -23,7 +23,7 @@ var roles = {
         ]
     }
 }
-var roleModule = {
+let roleModule = {
     "characters": [
         {
             "hp": 9,
@@ -45,7 +45,7 @@ var roleModule = {
 
 bot.on("message", function (e) {
     if (e.raw_message === ".st" || e.raw_message === "。st") {
-        var reply = `属性记录：.st (del/clr/show) ([属性名]:[属性值])\n.st 力量:50 体质:55 体型:65 敏捷:45 外貌:70 智力:75 意志:35 教育:65 幸运:75\n.st hp-1 后接+/-时视为从原值上变化\n.st san+1d6 修改属性时可使用掷骰表达式\n.st del kp裁决 //删除已保存的属性\n.st clr //清空当前卡\n.st show 灵感 //查看指定属性\n.st show //无参数时查看所有属性，请使用只st加点过技能的半自动人物卡！\n部分COC属性会被视为同义词，如智力/灵感、理智/san、侦查/侦察`
+        let reply = `属性记录：.st (del/clr/show) ([属性名]:[属性值])\n.st 力量:50 体质:55 体型:65 敏捷:45 外貌:70 智力:75 意志:35 教育:65 幸运:75\n.st hp-1 后接+/-时视为从原值上变化\n.st san+1d6 修改属性时可使用掷骰表达式\n.st del kp裁决 //删除已保存的属性\n.st clr //清空当前卡\n.st show 灵感 //查看指定属性\n.st show //无参数时查看所有属性，请使用只st加点过技能的半自动人物卡！\n部分COC属性会被视为同义词，如智力/灵感、理智/san、侦查/侦察`
         e.reply(
             [
                 reply
@@ -54,11 +54,11 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith(".st ") || e.raw_message.startsWith("。st ")) {
-        var tags = e.raw_message.substr(4)
-        var name = e.sender.nickname
-        var reply = ``
-        var roleAttribute = tags.replace(/[0-9]/ig, '')
-        var attributeNum = tags.replace(/[^0-9]/ig, '')
+        let tags = e.raw_message.substr(4)
+        let name = e.sender.nickname
+        let reply = ``
+        let roleAttribute = tags.replace(/[0-9]/ig, '')
+        let attributeNum = tags.replace(/[^0-9]/ig, '')
 
         console.log(roleAttribute)
 
@@ -80,8 +80,8 @@ bot.on("message", function (e) {
                     reply = `${roles[name]["characters"][0].hp}\n${roles[name]["characters"][0].magic}\n${roles[name]["characters"][0].mov}\n`
                 }
             } else {
-                var roleAttributes = tags.split(" ")
-                for (var i = 0; roleAttributes[i].split[":"][0] in roles[name]["characters"][0]; i++) {
+                let roleAttributes = tags.split(" ")
+                for (let i = 0; roleAttributes[i].split[":"][0] in roles[name]["characters"][0]; i++) {
                     roles[name]["characters"][0][roleAttributes[i].split[":"][0]] = roleAttributes[i].split[":"][1]
                     reply = `设置成功！${roleAttributes[i].split[":"][0]}=${roleAttributes[i].split[":"][1]}`
                 }
@@ -111,8 +111,8 @@ bot.on("message", function (e) {
                     reply = `${roles[name]["characters"][0]}`
                 }
             } else {
-                var roleAttributes = tags.split(" ")
-                for (var i = 0; roleAttributes[i].split[":"][0] in roles[name]["characters"][0]; i++) {
+                let roleAttributes = tags.split(" ")
+                for (let i = 0; roleAttributes[i].split[":"][0] in roles[name]["characters"][0]; i++) {
                     roles[name]["characters"][0][roleAttributes[i].split[":"][0]] = roleAttributes[i].split[":"][1]
                     reply = `设置成功！${roleAttributes[i].split[":"][0]}=${roleAttributes[i].split[":"][1]}`
                 }
