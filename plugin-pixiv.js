@@ -96,91 +96,7 @@ function getDailyPictureByTag(e, r18, tag) {
 
         fetchAPictureAndReply(title, r18, e)
     } else {
-        let randomPage = getRandomInt(1, 10)
-        let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=r18&p=${randomPage}&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=all&p=${randomPage}&s_mode=s_tag&type=all`
-        fetch(url, fetchOptions)
-            .then(data => data.json())
-            .then(function (data) {
-                let head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！'
-                let picture = ''
-                let title = ''
-                let url = ''
-                let page = ''
-                let uid = ''
-                let id = ''
-                let user = ''
-                let tags = ''
-                let temp = 0
-                let promiseArr = []
-                for (let j = 0; j < 50; j++) {
-                    let p = new Promise((resolve, reject) => {
-                        fetch(`https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`, fetchOptions)
-                            .then(data => data.text())
-                            .then(function (text) {
-                                let bookMark = parseInt(text.match(/"bookmarkCount":(.+?),"likeCount"/)[1])
-                                if (bookMark > temp) {
-                                    if (!r18 && (data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18') != -1 || data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18G') != -1)) { } else {
-                                        temp = bookMark
-                                        picture = text.match(/"original":"(.+?)"},"tags"/)[1]
-                                        title = data["body"]["illustManga"]["data"][j]["title"]
-                                        url = `https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`
-                                        page = data["body"]["illustManga"]["data"][j]["pageCount"]
-                                        uid = data["body"]["illustManga"]["data"][j]["userId"]
-                                        id = data["body"]["illustManga"]["data"][j]["id"]
-                                        user = data["body"]["illustManga"]["data"][j]["userName"]
-                                        tags = data["body"]["illustManga"]["data"][j]["tags"]
-                                    }
-                                }
-                                resolve()
-                            })
-                    })
-                    promiseArr.push(p)
-                }
-                Promise.all(promiseArr).then(res => {
-                    if (page === 1) {
-                        let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
-                        e.reply(
-                            [
-                                reply
-                            ]
-                        )
-                        e.reply(
-                            [
-                                segment.image(`https://pixiv.re/${id}` + picture.substr(-4, 4))
-                            ]
-                        ).then(function (results) {
-                            if (r18) {
-                                setTimeout(function () {
-                                    bot.deleteMsg(results["data"]["message_id"])
-                                }, 10000)
-                            }
-                        })
-                    } else {
-                        let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：`
-                        for (let i = 1; i <= page; i++) {
-                            reply += `https://pixiv.re/${id}-${i}` + picture.substr(-4, 4)
-                            reply += `\n`
-                        }
-                        e.reply(
-                            [
-                                reply
-                            ]
-                        )
-                        for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
-                            e.reply(
-                                [
-                                    segment.image(`https://pixiv.re/${id}-${i}` + picture.substr(-4, 4))
-                                ]
-                            ).then(function (results) {
-                                if (r18)
-                                    setTimeout(function () {
-                                        bot.deleteMsg(results["data"]["message_id"])
-                                    }, 10000)
-                            })
-                        }
-                    }
-                })
-            })
+        fetchAPictureByRandomTagAndReply(tag, r18, e)
     }
 }
 
@@ -242,37 +158,106 @@ function fetchAPictureAndReply(title, r18, e) {
         })
 }
 
-function fetchDataByRandomTag(randomTag, r18) {
-    let randomTagCollection = []
-    for (let i = 1; i <= 10; i++) {
-        let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${randomTag}?word=${randomTag}&order=date_d&mode=r18&p=${i}&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${randomTag}?word=${randomTag}&order=date_d&mode=all&p=${i}&s_mode=s_tag&type=all`
-        fetch(url, fetchOptions)
-            .then(data => data.json())
-            .then(function (data) {
-                let promiseArr = []
-                for (let n = 0; n < 50; n++) {
-                    let p = new Promise((resolve, reject) => {
-                        dailyPictures[data["contents"][n]["title"]] = {}
-                        dailyPictures[data["contents"][n]["title"]]["url"] = `https://www.pixiv.net/artworks/${data["contents"][n]["illust_id"]}`
-                        dailyPictures[data["contents"][n]["title"]]["user"] = data["contents"][n]["user_name"]
-                        dailyPictures[data["contents"][n]["title"]]["uid"] = data["contents"][n]["user_id"]
-                        dailyPictures[data["contents"][n]["title"]]["id"] = data["contents"][n]["illust_id"]
-                        dailyPictures[data["contents"][n]["title"]]["pages"] = data["contents"][n]["illust_page_count"]
-                        dailyPictures[data["contents"][n]["title"]]["tags"] = data["contents"][n]["tags"]
-                        dailyNumberCollection[data["contents"][n]["rank"]] = data["contents"][n]["title"]
-                        let tags = data["contents"][n]["tags"]
-                        for (let j = 0; j < tags.length; j++) {
-                            if (!(tags[j] in dailyTagCollection))
-                                dailyTagCollection[tags[j]] = []
-                            dailyTagCollection[tags[j]].push(data["contents"][n]["title"])
-                        }
-                        resolve()
-                    })
-                    promiseArr.push(p)
-                }
-            })
+function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
+    let tag = ''
+
+    for (let i = 0; i < randomTags.length; i++) {
+        tag += randomTags[i] + ' '
     }
-    return randomTagCollection
+
+    let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=r18&p=1&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=all&p=1&s_mode=s_tag&type=all`
+    fetch(url, fetchOptions)
+        .then(data => data.json())
+        .then(function (data) {
+            let totalPictures = data["body"]["illustManga"]["total"]
+            let totalPages = Math.floor(totalPictures / 50) + 1
+            let randomPage = getRandomInt(1, totalPages)
+            let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=r18&p=${randomPage}&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=all&p=${randomPage}&s_mode=s_tag&type=all`
+
+            fetch(url, fetchOptions)
+                .then(data => data.json())
+                .then(function (data) {
+                    let head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！'
+                    let picture = ''
+                    let title = ''
+                    let url = ''
+                    let page = ''
+                    let uid = ''
+                    let id = ''
+                    let user = ''
+                    let tags = ''
+                    let temp = 0
+                    let promiseArr = []
+                    for (let j = 0; j < 50; j++) {
+                        let p = new Promise((resolve, reject) => {
+                            fetch(`https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`, fetchOptions)
+                                .then(data => data.text())
+                                .then(function (text) {
+                                    let bookMark = parseInt(text.match(/"bookmarkCount":(.+?),"likeCount"/)[1])
+                                    if (bookMark > temp) {
+                                        if (!r18 && (data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18') != -1 || data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18G') != -1)) { } else {
+                                            temp = bookMark
+                                            picture = text.match(/"original":"(.+?)"},"tags"/)[1]
+                                            title = data["body"]["illustManga"]["data"][j]["title"]
+                                            url = `https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`
+                                            page = data["body"]["illustManga"]["data"][j]["pageCount"]
+                                            uid = data["body"]["illustManga"]["data"][j]["userId"]
+                                            id = data["body"]["illustManga"]["data"][j]["id"]
+                                            user = data["body"]["illustManga"]["data"][j]["userName"]
+                                            tags = data["body"]["illustManga"]["data"][j]["tags"]
+                                        }
+                                    }
+                                    resolve()
+                                })
+                        })
+                        promiseArr.push(p)
+                    }
+                    Promise.all(promiseArr).then(res => {
+                        if (page === 1) {
+                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
+                            e.reply(
+                                [
+                                    reply
+                                ]
+                            )
+                            e.reply(
+                                [
+                                    segment.image(`https://pixiv.re/${id}` + picture.substr(-4, 4))
+                                ]
+                            ).then(function (results) {
+                                if (r18) {
+                                    setTimeout(function () {
+                                        bot.deleteMsg(results["data"]["message_id"])
+                                    }, 10000)
+                                }
+                            })
+                        } else {
+                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：`
+                            for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
+                                reply += `https://pixiv.re/${id}-${i}` + picture.substr(-4, 4)
+                                reply += `\n`
+                            }
+                            e.reply(
+                                [
+                                    reply
+                                ]
+                            )
+                            for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
+                                e.reply(
+                                    [
+                                        segment.image(`https://pixiv.re/${id}-${i}` + picture.substr(-4, 4))
+                                    ]
+                                ).then(function (results) {
+                                    if (r18)
+                                        setTimeout(function () {
+                                            bot.deleteMsg(results["data"]["message_id"])
+                                        }, 10000)
+                                })
+                            }
+                        }
+                    })
+                })
+        })
 }
 
 function fetchData() {
