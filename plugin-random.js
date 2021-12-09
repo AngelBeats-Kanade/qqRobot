@@ -114,17 +114,24 @@ bot.on("message", function (e) {
             let num = getRandomIntInclusive(1, 100)
             jsonObj[name] = num + ""
 
+            let reply = ` 刀客塔今天的运气值为：${num}！新的一天要加油哦～`
+            if (num < 10) {
+                reply = ` 刀客塔今天的运气值为：${num}！刀客塔，我们的脚下，是一条漫长的道路。。。也许这是一次没有终点的旅行，但如果是和您一起，我觉得，非常幸福！`
+            } else if (num < 60) {
+                reply = ` 刀客塔今天的运气值为：${num}！无论多么艰难的任务，只要有刀客塔在，就一定能完成，我一直这样坚信着！`
+            }
+
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 刀客塔今天的运气值为：" + num + "！新的一天要加油哦～"
+                    reply
                 ]
             )
         } else {
             e.reply(
                 [
                     segment.at(e.user_id, '@' + e.sender.nickname, false),
-                    " 别试啦，今天的运气值为" + jsonObj[name] + "！刀客塔，还有很多工作没做，还不能休息哦。"
+                    " 别试啦，今天的运气值为" + jsonObj[name] + "！刀客塔，您还有许多事情需要处理，现在还不能休息哦。"
                 ]
             )
         }
