@@ -126,7 +126,8 @@ function fetchAPictureAndReply(title, r18, e) {
                 ).then(function (results) {
                     if (r18) {
                         setTimeout(function () {
-                            bot.deleteMsg(results["data"]["message_id"])
+                            bot.deleteMsg(results["message_id"])
+                            console.log(results)
                         }, 10000)
                     }
                 })
@@ -150,7 +151,7 @@ function fetchAPictureAndReply(title, r18, e) {
                         .then(function (results) {
                             if (r18)
                                 setTimeout(function () {
-                                    bot.deleteMsg(results["data"]["message_id"])
+                                    bot.deleteMsg(results["message_id"])
                                 }, 10000)
                         })
                 }
@@ -227,7 +228,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                             ).then(function (results) {
                                 if (r18) {
                                     setTimeout(function () {
-                                        bot.deleteMsg(results["data"]["message_id"])
+                                        bot.deleteMsg(results["message_id"])
                                     }, 10000)
                                 }
                             })
@@ -250,7 +251,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                                 ).then(function (results) {
                                     if (r18)
                                         setTimeout(function () {
-                                            bot.deleteMsg(results["data"]["message_id"])
+                                            bot.deleteMsg(results["message_id"])
                                         }, 10000)
                                 })
                             }
