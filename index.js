@@ -1,6 +1,5 @@
 "use strict"
 const account = 2198526707
-
 const bot = require("oicq").createClient(account)
 
 bot.on("system.login.qrcode", function (e) {

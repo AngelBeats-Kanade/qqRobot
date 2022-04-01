@@ -11,10 +11,10 @@
   "dependencies": {
     "https-proxy-agent": "^5.0.0",
     "mockjs": "^1.1.0",
-    "node-fetch": "^2.0.0",
-    "oicq": "^2.0.0"
+    "node-fetch": "^2.6.7",
+    "oicq": "^2.2.1"
   },
   "devDependencies": {
-    "@types/node": "^16.4.13"
+    "@types/node": "^16.11.26"
   }
 }

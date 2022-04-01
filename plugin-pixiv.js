@@ -38,7 +38,7 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith("来点二次元 ")) {
-        let tags = e.raw_message.substr(6)
+        let tags = e.raw_message.substring(6)
         if (tags.replace(/[0-9]/ig, '') === '') {
             tags = parseInt(tags)
             let page = Math.trunc(tags / 50) + 1
@@ -51,7 +51,7 @@ bot.on("message", function (e) {
     }
 
     if (e.raw_message.startsWith("来点色图 ")) {
-        let tags = e.raw_message.substr(5)
+        let tags = e.raw_message.substring(5)
         if (tags.replace(/[0-9]/ig, '') === '') {
             tags = parseInt(tags)
             let page = Math.trunc(tags / 50) + 1
@@ -96,7 +96,8 @@ function getDailyPictureByTag(e, r18, tag) {
 
         fetchAPictureAndReply(title, r18, e)
     } else {
-        fetchAPictureByRandomTagAndReply(tag, r18, e)
+        let randomTags = tag.split(' ')
+        fetchAPictureByRandomTagAndReply(randomTags, r18, e)
     }
 }
 
@@ -121,7 +122,7 @@ function fetchAPictureAndReply(title, r18, e) {
                 )
                 e.reply(
                     [
-                        segment.image(`https://pixiv.re/${id}` + picture.substr(-4, 4))
+                        segment.image(`https://pixiv.re/${id}` + picture.substring(picture.length - 4))
                     ]
                 ).then(function (results) {
                     if (r18) {
@@ -134,7 +135,7 @@ function fetchAPictureAndReply(title, r18, e) {
             } else {
                 reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：`
                 for (let i = 1; i <= page; i++) {
-                    reply += `https://pixiv.re/${id}-${i}` + picture.substr(-4, 4)
+                    reply += `https://pixiv.re/${id}-${i}` + picture.substring(picture.length - 4)
                     reply += `\n`
                 }
                 e.reply(
@@ -145,7 +146,7 @@ function fetchAPictureAndReply(title, r18, e) {
                 for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
                     e.reply(
                         [
-                            segment.image(`https://pixiv.re/${id}-${i}` + picture.substr(-4, 4))
+                            segment.image(`https://pixiv.re/${id}-${i}` + picture.substring(picture.length - 4))
                         ]
                     )
                         .then(function (results) {
@@ -166,6 +167,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
         tag += randomTags[i] + ' '
     }
 
+    tag = tag.trim()
     let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=r18&p=1&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=all&p=1&s_mode=s_tag&type=all`
     fetch(url, fetchOptions)
         .then(data => data.json())
@@ -174,7 +176,6 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
             let totalPages = Math.floor(totalPictures / 50) + 1
             let randomPage = getRandomInt(1, totalPages)
             let url = r18 ? `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=r18&p=${randomPage}&s_mode=s_tag&type=all` : `https://www.pixiv.net/ajax/search/artworks/${tag}?word=${tag}&order=date_d&mode=all&p=${randomPage}&s_mode=s_tag&type=all`
-
             fetch(url, fetchOptions)
                 .then(data => data.json())
                 .then(function (data) {
@@ -215,7 +216,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                     }
                     Promise.all(promiseArr).then(res => {
                         if (page === 1) {
-                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
+                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substring(-4, 4)
                             e.reply(
                                 [
                                     reply
@@ -223,7 +224,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                             )
                             e.reply(
                                 [
-                                    segment.image(`https://pixiv.re/${id}` + picture.substr(-4, 4))
+                                    segment.image(`https://pixiv.re/${id}` + picture.substring(picture.length - 4))
                                 ]
                             ).then(function (results) {
                                 if (r18) {
@@ -235,7 +236,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                         } else {
                             let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：`
                             for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
-                                reply += `https://pixiv.re/${id}-${i}` + picture.substr(-4, 4)
+                                reply += `https://pixiv.re/${id}-${i}` + picture.substring(picture.length - 4)
                                 reply += `\n`
                             }
                             e.reply(
@@ -246,7 +247,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                             for (let i = 1; i <= (page <= 5 ? page : 5); i++) {
                                 e.reply(
                                     [
-                                        segment.image(`https://pixiv.re/${id}-${i}` + picture.substr(-4, 4))
+                                        segment.image(`https://pixiv.re/${id}-${i}` + picture.substring(picture.length - 4))
                                     ]
                                 ).then(function (results) {
                                     if (r18)

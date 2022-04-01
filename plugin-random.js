@@ -123,14 +123,14 @@ bot.on("message", function (e) {
 
             e.reply(
                 [
-                    segment.at(e.user_id, '@' + e.sender.nickname, false),
+                    segment.at(e.sender.user_id, e.sender.nickname, false),
                     reply
                 ]
             )
         } else {
             e.reply(
                 [
-                    segment.at(e.user_id, '@' + e.sender.nickname, false),
+                    segment.at(e.sender.user_id, e.sender.nickname, false),
                     " 别试啦，今天的运气值为" + jsonObj[name] + "！刀客塔，您还有许多事情需要处理，现在还不能休息哦。"
                 ]
             )
@@ -142,17 +142,21 @@ bot.on("message", function (e) {
     if (e.raw_message === ".rd" || e.raw_message === "。rd")
         e.reply(
             [
-                segment.at(e.user_id, '@' + e.sender.nickname, false),
+                segment.at(e.sender.user_id, e.sender.nickname, false),
                 " 刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100)
             ]
         )
 
     if (e.raw_message.startsWith(".rd ") || e.raw_message.startsWith("。rd ")) {
-        let numbers = e.raw_message.substr(4)
+        let numbers = e.raw_message.substring(4)
         let flexNum = 0
         let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
         let randomNum = getRandomIntInclusive(1, measureNum)
         let reply = `刀客塔，从罗德岛传回来的结果为D${measureNum}=${randomNum}`
+
+        if (measureNum === NaN) {
+            reply = "刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100)
+        }
 
         if (numbers.indexOf("+") != -1) {
             flexNum = numbers.split("+")[1]
@@ -172,7 +176,7 @@ bot.on("message", function (e) {
 
         e.reply(
             [
-                segment.at(e.user_id, '@' + e.sender.nickname, false),
+                segment.at(e.sender.user_id, e.sender.nickname, false),
                 " " + reply
             ]
         )
@@ -203,7 +207,7 @@ bot.on("message", function (e) {
 
         e.reply(
             [
-                segment.at(e.user_id, '@' + e.sender.nickname, false),
+                segment.at(e.sender.user_id, e.sender.nickname, false),
                 words
             ]
         )
@@ -219,24 +223,24 @@ bot.on("message", function (e) {
 
 bot.on("message", function (e) {
     if (e.raw_message === "。rhd" || e.raw_message === ".rhd") {
-        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D100=" + getRandomIntInclusive(1, 100))
+        this.sendPrivateMsg(e.sender.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D100=" + getRandomIntInclusive(1, 100))
     }
 
     if (e.raw_message.startsWith("。rhd ") || e.raw_message.startsWith(".rhd ")) {
         let num = e.raw_message.replace(/[^0-9]/ig, "")
-        this.sendPrivateMsg(e.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D" + num + "=" + getRandomIntInclusive(1, num))
+        this.sendPrivateMsg(e.sender.user_id, "刀客塔，你要的检定结果来了哦！让我看看，结果为：D" + num + "=" + getRandomIntInclusive(1, num))
     }
 })
 
 bot.on("message", function (e) {
     if (e.raw_message.startsWith("。ra") || e.raw_message.startsWith(".ra")) {
         let reply = ""
-        let numbers = e.raw_message.substr(4)
+        let numbers = e.raw_message.substring(4)
         let flexNum = 0
         let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ""))
         let randomNum = getRandomIntInclusive(1, 100)
         let bigFailureNum = 96
-        let skill = e.raw_message.substr(3).replace(/[0-9]|\+|\-/ig, "")
+        let skill = e.raw_message.substring(3).replace(/[0-9]|\+|\-/ig, "")
         let replyWords = "成功"
 
         if (numbers.indexOf("+") != -1) {
@@ -281,12 +285,12 @@ bot.on("message", function (e) {
 
 bot.on("message", function (e) {
     if (e.raw_message.startsWith(".name ") || e.raw_message.startsWith("。name ")) {
-        let tags = e.raw_message.substr(6)
+        let tags = e.raw_message.substring(6)
         let num = parseInt(tags.replace(/[^0-9|^\.|^\-]/ig, ""))
         let reply = ``
         let names = {}
         if (num <= 0) {
-            e.reply("刀客塔，.name后面跟着的数字一定要大于0哦")
+            e.reply("刀客塔，.name后面跟着的数字一定要大于0哦", true)
             return -1
         }
         if (tags.search("cn") != -1) {
