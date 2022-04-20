@@ -9,12 +9,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "https-proxy-agent": "^5.0.0",
+    "https-proxy-agent": "^5.0.1",
     "mockjs": "^1.1.0",
     "node-fetch": "^2.6.7",
-    "oicq": "^2.2.1"
+    "oicq": "^2.2.2"
   },
   "devDependencies": {
-    "@types/node": "^16.11.26"
+    "@types/node": "^16.11.27"
   }
 }

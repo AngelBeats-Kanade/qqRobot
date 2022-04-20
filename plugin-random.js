@@ -158,6 +158,10 @@ bot.on("message", function (e) {
             reply = "刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100)
         }
 
+        if (measureNum === 0) {
+            reply = '刀客塔，随机数上限必须大于0哦！'
+        }
+
         if (numbers.indexOf("+") != -1) {
             flexNum = numbers.split("+")[1]
             measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ""))

@@ -113,7 +113,7 @@ function fetchAPictureAndReply(title, r18, e) {
             let id = r18 ? dailyR18Pictures[title]["id"] : dailyPictures[title]["id"]
             let user = r18 ? dailyR18Pictures[title]["user"] : dailyPictures[title]["user"]
             let tags = r18 ? dailyR18Pictures[title]["tags"] : dailyPictures[title]["tags"]
-            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substr(-4, 4)
+            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substring(picture.length - 4)
             if (page === '1') {
                 e.reply(
                     [
@@ -216,7 +216,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                     }
                     Promise.all(promiseArr).then(res => {
                         if (page === 1) {
-                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substring(-4, 4)
+                            let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substring(picture.length - 4)
                             e.reply(
                                 [
                                     reply
@@ -268,7 +268,7 @@ function fetchData() {
         fetch(url, fetchOptions)
             .then(data => data.json())
             .then(function (data) {
-                for (let n = 0; n < 50; n++) {
+                for (let n = 0; n < data["contents"].length; n++) {
                     dailyPictures[data["contents"][n]["title"]] = {}
                     dailyPictures[data["contents"][n]["title"]]["url"] = `https://www.pixiv.net/artworks/${data["contents"][n]["illust_id"]}`
                     dailyPictures[data["contents"][n]["title"]]["user"] = data["contents"][n]["user_name"]
@@ -292,7 +292,7 @@ function fetchData() {
         fetch(url, fetchOptions)
             .then(data => data.json())
             .then(function (data) {
-                for (let n = 0; n < 50; n++) {
+                for (let n = 0; n < data["contents"].length; n++) {
                     dailyR18Pictures[data["contents"][n]["title"]] = {}
                     dailyR18Pictures[data["contents"][n]["title"]]["url"] = `https://www.pixiv.net/artworks/${data["contents"][n]["illust_id"]}`
                     dailyR18Pictures[data["contents"][n]["title"]]["user"] = data["contents"][n]["user_name"]
