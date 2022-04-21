@@ -1,5 +1,4 @@
 'use strict'
-
 const { segment } = require('oicq')
 const { bot } = require('./index')
 const fs = require('fs')

@@ -1,5 +1,5 @@
 'use strict'
-const { bot } = require('./index')
+const { bot } = require('../index')
 
 // 收到好友申请
 bot.on('request.friend.add', async function (e) {

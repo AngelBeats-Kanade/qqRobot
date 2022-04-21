@@ -104,6 +104,4 @@ dist
 .tern-port
 
 data
-
-# package-lock.json
-package-lock.json
+built

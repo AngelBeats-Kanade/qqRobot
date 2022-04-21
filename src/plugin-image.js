@@ -1,6 +1,6 @@
 'use strict'
 const { segment } = require('oicq')
-const { bot } = require('./index')
+const { bot } = require('../index')
 
 // 发送图片
 // 向你的机器人发送 image

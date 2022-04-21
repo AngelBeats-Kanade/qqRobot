@@ -1,6 +1,6 @@
 'use strict'
 const { segment } = require('oicq')
-const { bot } = require('./index')
+const { bot } = require('../index')
 const fetch = require('node-fetch')
 const HttpsProxyAgent = require('https-proxy-agent')
 

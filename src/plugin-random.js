@@ -18,7 +18,7 @@ const tarots = JSON.parse(fs.readFileSync('./resources/tarots.json'))
 //         jsonObj = {}
 // }, 0)
 
-schedule.scheduleJob('cleanDataEveryDay', '000***', function () {
+schedule.scheduleJob('cleanDataEveryDay', '0 0 0 * * *', function () {
     dataJson = {}
 })
 

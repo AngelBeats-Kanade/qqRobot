@@ -18,7 +18,7 @@ bot.on('system.login.qrcode', function (e) {
 exports.bot = bot
 
 require('./plugin-hello') //hello
-// require("./plugin-image") //发送图文和表情
+// require("./src/plugin-image") //发送图文和表情
 require('./plugin-request') //加群和好友
 require('./plugin-random') //骰娘的功能
 require('./plugin-pixiv') //pixiv的功能
