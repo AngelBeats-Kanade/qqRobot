@@ -1,18 +1,18 @@
-"use strict"
+'use strict'
 
-const { segment } = require("oicq")
-const { bot } = require("./index")
-const fs = require("fs")
-const { time } = require("console")
+const { segment } = require('oicq')
+const { bot } = require('./index')
+const fs = require('fs')
+const { time } = require('console')
 
 let players = {
-    'AngelBeats-Kanade': 'Rhodes Island'
+    "AngelBeats-Kanade": "Rhodes Island"
 }
 const arknightsData = 'data/arknights.json'
 
 initialize()
 
-bot.on("message", function (e) {
+bot.on('message', function (e) {
     if (e.raw_message.search('阿米娅垫刀') != -1) {
         let number = e.raw_message.replace(/[^0-9]/ig, '')
         let name = e.sender.nickname
@@ -28,7 +28,7 @@ bot.on("message", function (e) {
             if (err) {
                 throw err
             }
-            console.log("JSON data is saved.")
+            console.log('JSON data is saved.')
         })
 
         let reply = `${name}当前的垫刀数为：${players[name].prePulls}\n当前6星概率为：${players[name].probability}\n今日已抽卡：${players[name].dailyPulls}\n累计共抽取了：${players[name].totalPulls}\n累计获得了${players[name].sixStars}个六星和${players[name].fiveStars}个五星`

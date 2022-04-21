@@ -1,12 +1,12 @@
-"use strict"
-const { segment } = require("oicq")
-const { bot } = require("./index")
-const mock = require("mockjs")
-const random = mock.Random
+'use strict'
+const { segment } = require('oicq')
+const { bot } = require('./index')
+const schedule = require('node-schedule')
+const random = require('mockjs').Random
 
 let jsonObj = {}
 
-let tarots = {
+const tarots = {
     "0": [
         "【0】愚者正位：憧憬自然的地方、毫无目的地前行、喜欢尝试挑战新鲜事物、四处流浪。明知是毫无意义的冒险，错误的选择及失败的结果，却一意孤行，盲目地追求梦想而完全忽略现实；好冒险、寻梦人、不拘泥于传统的观念、自由奔放、一切从基础出发、四处流浪。自由恋爱、不顾及他人看法、以独特的方式获得成功、轻易坠入爱河、浪漫多彩的爱情、独特的恋人、等待交往机会。工作上具冒险心、追求新奇。热衷于事业或学业、以独特的方式取得意外的收获、由于好奇心对当前的学业产生浓厚的兴趣、把握重点、寻求捷径、倾向于自由的工作氛围、适合艺术类工作或从事自由职业。健康状况佳。旅行有意外收获。美好的梦想。",
         "【0】愚者逆位：冒险的行动，追求可能性，重视梦想，无视物质的损失，离开家园，过于信赖别人，为出外旅行而烦恼。心情空虚、轻率的恋情、无法长久持续的融洽感、不安的爱情的旅程、对婚姻感到束缚、彼此忽冷忽热、不顾众人反对坠入爱河、为恋人的负心所伤、感情不专一。工作缺乏稳定性、无责任。成绩一落千丈、没有耐心、行事缺乏计划、经常迟到、猜题错误导致考试失利、考前突击无法为你带来太大的效果。因不安定的生活而生病。不能放心的旅行。不能下决心、怪癖。不切实际。"
@@ -97,18 +97,22 @@ let tarots = {
     ]
 }
 
-setInterval(function () {
-    let date = new Date()
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
-    if (h === 0 && m === 0 && s === 0)
-        jsonObj = {}
-}, 0)
+// setInterval(function () {
+//     let date = new Date()
+//     let h = date.getHours();
+//     let m = date.getMinutes();
+//     let s = date.getSeconds();
+//     if (h === 0 && m === 0 && s === 0)
+//         jsonObj = {}
+// }, 0)
 
-bot.on("message", function (e) {
-    if (e.raw_message === ".jrrp" || e.raw_message === "。jrrp") {
-        let name = e.sender.nickname
+schedule.scheduleJob('cleanDataEveryDay', '000***', function () {
+    jsonObj = {}
+})
+
+bot.on('message', function (e) {
+    if (e.raw_message === '.jrrp' || e.raw_message === '。jrrp') {
+        const name = e.sender.nickname
 
         if (!(name in jsonObj)) {
             let num = getRandomIntInclusive(1, 100)
@@ -314,6 +318,37 @@ bot.on("message", function (e) {
         )
     }
 })
+
+function onJrrp(e, jsonObj) {
+    const name = e.sender.nickname
+    const id = e.sender.user_id
+
+    if (!(name in jsonObj)) {
+        let num = getRandomIntInclusive(1, 100)
+        jsonObj[name] = num + ""
+
+        let reply = ` 刀客塔今天的运气值为：${num}！新的一天要加油哦～`
+        if (num < 10) {
+            reply = ` 刀客塔今天的运气值为：${num}！刀客塔，我们的脚下，是一条漫长的道路。。。也许这是一次没有终点的旅行，但如果是和您一起，我觉得，非常幸福！`
+        } else if (num < 60) {
+            reply = ` 刀客塔今天的运气值为：${num}！无论多么艰难的任务，只要有刀客塔在，就一定能完成，我一直这样坚信着！`
+        }
+
+        e.reply(
+            [
+                segment.at(e.sender.user_id, e.sender.nickname, false),
+                reply
+            ]
+        )
+    } else {
+        e.reply(
+            [
+                segment.at(e.sender.user_id, e.sender.nickname, false),
+                " 别试啦，今天的运气值为" + jsonObj[name] + "！刀客塔，您还有许多事情需要处理，现在还不能休息哦。"
+            ]
+        )
+    }
+}
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
