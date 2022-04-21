@@ -1,7 +1,7 @@
-"use strict"
-const { segment } = require("oicq")
-const { bot } = require("./index")
-const fetch = require("node-fetch")
+'use strict'
+const { segment } = require('oicq')
+const { bot } = require('./index')
+const fetch = require('node-fetch')
 const HttpsProxyAgent = require('https-proxy-agent')
 
 let dailyNumberCollection = {}
@@ -11,9 +11,9 @@ let dailyTagR18Collection = {}
 let dailyPictures = {}
 let dailyR18Pictures = {}
 
-let ip = '127.0.0.1'
-let port = '8889'
-let fetchOptions = {
+const ip = '127.0.0.1'
+const port = '8889'
+const fetchOptions = {
     headers: {
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
         'referer': 'https://www.pixiv.net/ranking.php?mode=daily&content=illust',
@@ -22,22 +22,22 @@ let fetchOptions = {
     method: 'GET',
     redirect: 'follow',
     timeout: 10000,
-    agent: new HttpsProxyAgent("http://" + ip + ":" + port)
+    agent: new HttpsProxyAgent('http://' + ip + ':' + port)
 }
 
 setInterval(fetchData, 60000)
 fetchData()
 
-bot.on("message", function (e) {
-    if (e.raw_message === "来点二次元") {
+bot.on('message', function (e) {
+    if (e.raw_message === '来点二次元') {
         getDailyPicture(e, false)
     }
 
-    if (e.raw_message === "来点色图") {
+    if (e.raw_message === '来点色图') {
         getDailyPicture(e, true)
     }
 
-    if (e.raw_message.startsWith("来点二次元 ")) {
+    if (e.raw_message.startsWith('来点二次元 ')) {
         let tags = e.raw_message.substring(6)
         if (tags.replace(/[0-9]/ig, '') === '') {
             tags = parseInt(tags)
@@ -50,7 +50,7 @@ bot.on("message", function (e) {
         }
     }
 
-    if (e.raw_message.startsWith("来点色图 ")) {
+    if (e.raw_message.startsWith('来点色图 ')) {
         let tags = e.raw_message.substring(5)
         if (tags.replace(/[0-9]/ig, '') === '') {
             tags = parseInt(tags)
