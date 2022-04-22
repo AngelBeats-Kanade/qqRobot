@@ -7,7 +7,7 @@ const fs = require('fs')
 
 let dataJson = {}
 
-const tarots = JSON.parse(fs.readFileSync('./resources/tarots.json'))
+const tarots = JSON.parse(fs.readFileSync('resources/tarots.json'))
 
 // setInterval(function () {
 //     let date = new Date()

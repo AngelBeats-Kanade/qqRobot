@@ -1,19 +1,19 @@
-'use strict'
-const { segment } = require('oicq')
-const { bot } = require('../index')
-const fetch = require('node-fetch')
-const HttpsProxyAgent = require('https-proxy-agent')
+import { segment, PrivateMessageEvent, GroupMessageEvent, DiscussMessageEvent } from 'oicq';
+import fetch, { RequestInit } from 'node-fetch';
+import HttpsProxyAgent from 'https-proxy-agent';
+import { bot } from './index';
+import { PixivData } from './pixiv-data';
 
-let dailyNumberCollection = {}
-let dailyTagCollection = {}
-let dailyNumberR18Collection = {}
-let dailyTagR18Collection = {}
-let dailyPictures = {}
-let dailyR18Pictures = {}
+let dailyNumberCollection: INumberCollection = {}
+let dailyTagCollection: ITagCollection = {}
+let dailyNumberR18Collection: INumberCollection = {}
+let dailyTagR18Collection: ITagCollection = {}
+let dailyPictures:ICollection = {}
+let dailyR18Pictures:ICollection = {}
 
 const ip = '127.0.0.1'
 const port = '8889'
-const fetchOptions = {
+const fetchOptions: RequestInit = {
     headers: {
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
         'referer': 'https://www.pixiv.net/ranking.php?mode=daily&content=illust',
@@ -21,8 +21,7 @@ const fetchOptions = {
     },
     method: 'GET',
     redirect: 'follow',
-    timeout: 10000,
-    agent: new HttpsProxyAgent('http://' + ip + ':' + port)
+    agent: HttpsProxyAgent('http://' + ip + ':' + port)
 }
 
 setInterval(fetchData, 60000)
@@ -40,9 +39,9 @@ bot.on('message', function (e) {
     if (e.raw_message.startsWith('来点二次元 ')) {
         let tags = e.raw_message.substring(6)
         if (tags.replace(/[0-9]/ig, '') === '') {
-            tags = parseInt(tags)
-            let page = Math.trunc(tags / 50) + 1
-            let number = tags % 50
+            let rank = parseInt(tags)
+            let page = Math.trunc(rank / 50) + 1
+            let number = rank % 50
 
             getDailyPictureByNumber(e, false, page, number)
         } else {
@@ -53,11 +52,11 @@ bot.on('message', function (e) {
     if (e.raw_message.startsWith('来点色图 ')) {
         let tags = e.raw_message.substring(5)
         if (tags.replace(/[0-9]/ig, '') === '') {
-            tags = parseInt(tags)
-            let page = Math.trunc(tags / 50) + 1
-            let number = tags % 50
+            let rank = parseInt(tags)
+            let page = Math.trunc(rank / 50) + 1
+            let number = rank % 50
 
-            getDailyPictureByNumber(e, 'daily_r18', page, number)
+            getDailyPictureByNumber(e, true, page, number)
         } else {
             getDailyPictureByTag(e, true, tags)
         }
@@ -68,27 +67,27 @@ bot.on('message', function (e) {
     }
 })
 
-function getRandomInt(min, max) {
+function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getDailyPicture(e, r18) {
+function getDailyPicture(e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, r18: boolean) {
     let randomPage = r18 ? getRandomInt(1, 2) : getRandomInt(1, 10)
     let randomNumber = getRandomInt(0, 49)
 
     getDailyPictureByNumber(e, r18, randomPage, randomNumber)
 }
 
-function getDailyPictureByNumber(e, r18, page, number) {
-    let rank = ((page - 1) * 50 + number).toString()
+function getDailyPictureByNumber(e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, r18: boolean, page: number, number: number) {
+    let rank = (page - 1) * 50 + number
     let title = r18 ? dailyNumberR18Collection[rank] : dailyNumberCollection[rank]
 
     fetchAPictureAndReply(title, r18, e)
 }
 
-function getDailyPictureByTag(e, r18, tag) {
+function getDailyPictureByTag(e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, r18: boolean, tag: string) {
     let tagCollection = r18 ? dailyTagR18Collection : dailyTagCollection
     if (tag in tagCollection) {
         let randomNumber = getRandomInt(0, tagCollection[tag].length - 1)
@@ -101,20 +100,20 @@ function getDailyPictureByTag(e, r18, tag) {
     }
 }
 
-function fetchAPictureAndReply(title, r18, e) {
+function fetchAPictureAndReply(title: string, r18: boolean, e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent) {
     let url = r18 ? dailyR18Pictures[title]["url"] : dailyPictures[title]["url"]
     fetch(url, fetchOptions)
         .then(text => text.text())
         .then(function (text) {
             let picture = text.match(/"original":"(.+?)"},"tags"/)[1]
             let head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！'
-            let page = r18 ? dailyR18Pictures[title]["pages"] : dailyPictures[title]["pages"]
+            let page =parseInt( r18 ? dailyR18Pictures[title]["pages"] : dailyPictures[title]["pages"])
             let uid = r18 ? dailyR18Pictures[title]["uid"] : dailyPictures[title]["uid"]
             let id = r18 ? dailyR18Pictures[title]["id"] : dailyPictures[title]["id"]
             let user = r18 ? dailyR18Pictures[title]["user"] : dailyPictures[title]["user"]
             let tags = r18 ? dailyR18Pictures[title]["tags"] : dailyPictures[title]["tags"]
             let reply = `${head}\n作者：${user}\nuid：${uid}\ntitle：${title}\ntags：${tags}\np站链接：${url}\n国内直连链接：https://pixiv.re/${id}` + picture.substring(picture.length - 4)
-            if (page === '1') {
+            if (page === 1) {
                 e.reply(
                     [
                         reply
@@ -160,7 +159,7 @@ function fetchAPictureAndReply(title, r18, e) {
         })
 }
 
-function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
+function fetchAPictureByRandomTagAndReply(randomTags: string | string[], r18: boolean, e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent) {
     let tag = ''
 
     for (let i = 0; i < randomTags.length; i++) {
@@ -183,7 +182,7 @@ function fetchAPictureByRandomTagAndReply(randomTags, r18, e) {
                     let picture = ''
                     let title = ''
                     let url = ''
-                    let page = ''
+                    let page = 0
                     let uid = ''
                     let id = ''
                     let user = ''
@@ -269,7 +268,7 @@ function fetchData() {
             .then(data => data.json())
             .then(function (data) {
                 for (let n = 0; n < data["contents"].length; n++) {
-                    dailyPictures[data["contents"][n]["title"]] = {}
+                    // dailyPictures[data["contents"][n]["title"]] = {}
                     dailyPictures[data["contents"][n]["title"]]["url"] = `https://www.pixiv.net/artworks/${data["contents"][n]["illust_id"]}`
                     dailyPictures[data["contents"][n]["title"]]["user"] = data["contents"][n]["user_name"]
                     dailyPictures[data["contents"][n]["title"]]["uid"] = data["contents"][n]["user_id"]
@@ -293,7 +292,7 @@ function fetchData() {
             .then(data => data.json())
             .then(function (data) {
                 for (let n = 0; n < data["contents"].length; n++) {
-                    dailyR18Pictures[data["contents"][n]["title"]] = {}
+                    // dailyR18Pictures[data["contents"][n]["title"]] = {}
                     dailyR18Pictures[data["contents"][n]["title"]]["url"] = `https://www.pixiv.net/artworks/${data["contents"][n]["illust_id"]}`
                     dailyR18Pictures[data["contents"][n]["title"]]["user"] = data["contents"][n]["user_name"]
                     dailyR18Pictures[data["contents"][n]["title"]]["uid"] = data["contents"][n]["user_id"]
@@ -310,4 +309,25 @@ function fetchData() {
                 }
             })
     }
+}
+
+interface ITagCollection {
+    [key: string]: string[];
+}
+
+interface INumberCollection {
+    [key: number]: string;
+}
+
+interface ICollection {
+    [key: string]: IPicture;
+}
+
+interface IPicture {
+    url: string;
+    user: string;
+    uid: number;
+    id: number;
+    pages: string;
+    tags: string[];
 }
