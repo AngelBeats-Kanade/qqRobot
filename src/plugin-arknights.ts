@@ -30,14 +30,14 @@ bot.on('message', function (e) {
         let number = e.raw_message.replace(/[^0-9]/ig, '');
 
         if (!(name in players)) {
-            players[name].name = name;
-            players[name].sixStars = 0;
-            players[name].fiveStars = 0;
-            players[name].totalPulls = 0;
-            players[name].prePulls = 0; //指抽出货之前的垫刀，我实在不知道怎么翻译
-            players[name].dailyPulls = 0;
-            players[name].probability = '2%';
-            // players[name] = new Player(name);
+            // players[name].name = name;
+            // players[name].sixStars = 0;
+            // players[name].fiveStars = 0;
+            // players[name].totalPulls = 0;
+            // players[name].prePulls = 0; //指抽出货之前的垫刀，我实在不知道怎么翻译
+            // players[name].dailyPulls = 0;
+            // players[name].probability = '2%';
+            players[name] = new Player(name);
         }
 
         players[name].prePulls += (number === '') ? 1 : parseInt(number);
@@ -90,7 +90,7 @@ bot.on('message', function (e) {
 })
 
 interface IPlayers {
-    [key: string]: IPlayer;
+    [key: string]: Player;
 }
 
 interface IPlayer {
