@@ -1,4 +1,4 @@
-import { bot } from './index';
+import { bot } from './plugin-bot';
 
 // 向你的机器人发送 hello
 bot.on('message', function (e) {

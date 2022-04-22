@@ -1,3 +1,4 @@
+//以下为pixiv的搜寻api返回json数据的接口
 export interface TitleCaptionTranslation {
     workTitle?: any;
     workCaption?: any;
@@ -159,7 +160,63 @@ export interface Body {
     extraData: ExtraData;
 }
 
-export interface PixivData {
+export interface PixivSearchData {
     error: boolean;
     body: Body;
+}
+
+//以下为pixiv每日排名api返回的json数据的接口
+export interface IllustContentType {
+    sexual: number;
+    lo: boolean;
+    grotesque: boolean;
+    violent: boolean;
+    homosexual: boolean;
+    drug: boolean;
+    thoughts: boolean;
+    antisocial: boolean;
+    religion: boolean;
+    original: boolean;
+    furry: boolean;
+    bl: boolean;
+    yuri: boolean;
+}
+
+export interface Content {
+    title: string;
+    date: string;
+    tags: string[];
+    url: string;
+    illust_type: string;
+    illust_book_style: string;
+    illust_page_count: string;
+    user_name: string;
+    profile_img: string;
+    illust_content_type: IllustContentType;
+    illust_series: boolean;
+    illust_id: number;
+    width: number;
+    height: number;
+    user_id: number;
+    rank: number;
+    yes_rank: number;
+    rating_count: number;
+    view_count: number;
+    illust_upload_timestamp: number;
+    attr: string;
+    is_bookmarked: boolean;
+    bookmarkable: boolean;
+}
+
+export interface PixivRankData {
+    contents: Content[];
+    mode: string;
+    content: string;
+    page: number;
+    prev: boolean;
+    next: number;
+    date: string;
+    prev_date: string;
+    next_date: boolean;
+    rank_total: number;
 }

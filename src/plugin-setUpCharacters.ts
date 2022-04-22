@@ -1,23 +1,23 @@
 import { segment } from 'oicq';
-import { bot } from './index';
+import { bot } from './plugin-bot';
 
 let players: IPlayers = {
     "Template": [
         {
             "name": "Role",
-            "hp": "9",
-            "san": "11",
-            "magic": "11",
-            "mov": "10",
-            "力量": "50",
-            "体质": "55",
-            "体型": "65",
-            "敏捷": "45",
-            "外貌": "70",
-            "智力": "75",
-            "意志": "35",
-            "教育": "65",
-            "幸运": "75"
+            "hp": 9,
+            "san": 11,
+            "magic": 11,
+            "mov": 10,
+            "力量": 50,
+            "体质": 55,
+            "体型": 65,
+            "敏捷": 45,
+            "外貌": 70,
+            "智力": 75,
+            "意志": 35,
+            "教育": 65,
+            "幸运": 75,
         }
     ]
 };
@@ -33,81 +33,97 @@ bot.on('message', function (e) {
     }
 
     if (e.raw_message.startsWith('.st ') || e.raw_message.startsWith('。st ')) {
-        let tags = e.raw_message.substr(4);
+        let tags = e.raw_message.substring(4);
         let name = e.sender.nickname;
-        let reply = ``;
-        let roleAttribute = tags.replace(/[0-9]/ig, '');
-        let attributeNum = tags.replace(/[^0-9]/ig, '');
-
-        console.log(roleAttribute);
+        let reply: string;
 
         if (name in players) {
-            if (tags.search("del") != -1) {
-                roleAttribute = roleAttribute.substr(3).replace(" ", "");
-                players[name][0][roleAttribute] = '0';
+            let character = players[name][0];
+            let roleAttribute = tags.replace(/[0-9]/ig, '');
+
+            if (tags.search('del') != -1) {
+                roleAttribute = roleAttribute.substring(3).replace(' ', '');
+                setUpSkill(character, roleAttribute, 0);
                 reply = `删除${roleAttribute}成功！`;
             }
-            else if (tags.search("clr") != -1) {
+            else if (tags.search('clr') != -1) {
                 delete (players[name]);
                 reply = `清除卡成功！`;
             }
-            else if (tags.search("show") != -1) {
-                if (tags.split("show")[1] != "") {
-                    roleAttribute = roleAttribute.substr(4).replace(" ", "");
-                    reply = `${roleAttribute}=${players[name][0][roleAttribute]}`;
+            else if (tags.search('show') != -1) {
+                if (tags.split('show')[1] != '') {
+                    roleAttribute = roleAttribute.substring(4).replace(' ', '');
+                    reply = `${roleAttribute}=${getSkill(character, roleAttribute)}`;
                 } else {
-                    reply = `${players[name][0].hp}\n${players[name][0].magic}\n${players[name][0].mov}\n`;
+                    reply = `${character.hp}\n${character.magic}\n${character.mov}\n`;
                 }
             } else {
-                let roleAttributes = tags.split(" ");
-                for (let i = 0; roleAttributes[i].split[":"][0] in players[name][0]; i++) {
-                    players[name][0][roleAttributes[i].split[":"][0]] = roleAttributes[i].split[":"][1]
-                    reply = `设置成功！${roleAttributes[i].split[":"][0]}=${roleAttributes[i].split[":"][1]}`
-                }
+                let roleAttributes = tags.replace(/[(\w+):]/ig, '').split(' ');
+                let attributeNums = tags.replace(/[:(\d+)]/ig, '').split(' ');
+                reply = setUpSkills(character, roleAttributes, attributeNums);
             }
         } else {
-            players[name] = players.Template
-            e.reply(
-                [
-                    "初始化卡片成功！"
-                ]
-            )
-
-            if (tags.search("del") != -1) {
-                roleAttribute = roleAttribute.substr(3).replace(" ", "")
-                players[name][0][roleAttribute] = '0'
-                reply = `删除${roleAttribute}成功！`
-            }
-            else if (tags.search("clr") != -1) {
-                players[name] = players.Template
-                reply = `清除卡成功！`
-            }
-            else if (tags.search("show") != -1) {
-                if (tags.split("show")[1] != "") {
-                    roleAttribute = roleAttribute.substr(4).replace(" ", "")
-                    reply = `${roleAttribute}=${players[name][0][roleAttribute]}`
-                } else {
-                    reply = `${players[name][0]}`
-                }
-            } else {
-                let roleAttributes = tags.split(" ")
-                for (let i = 0; roleAttributes[i].split[":"][0] in players[name][0]; i++) {
-                    players[name][0][roleAttributes[i].split[":"][0]] = roleAttributes[i].split[":"][1]
-                    reply = `设置成功！${roleAttributes[i].split[":"][0]}=${roleAttributes[i].split[":"][1]}`
-                }
-            }
+            reply = '未查询到卡片，正在初始化卡片...\n初始化卡片成功！';
+            players[name] = players.Template;
         }
 
         e.reply(
             [
                 reply
             ]
-        )
+        );
     }
 })
 
+function setUpSkills(character: ICharacter, skills: string[], numbers: string[]): string {
+    let skillLength = skills.length;
+    let numberLength = numbers.length;
+    if (skillLength === numberLength) {
+        let reply = '设置参数成功:';
+
+        for (let i = 0; i < skillLength; i++) {
+            setUpSkill(character, skills[i], parseInt(numbers[i]));
+            reply += `\n${skills[i]}:${numbers[i]}`;
+        }
+    }
+
+    return '抱歉博士，参数似乎并不匹配。请重新输入要分配的参数。';
+}
+
+function setUpSkill(character: ICharacter, skill: string, num: number) {
+    if (isValidKey(skill, character)) {
+        if (skill != 'name')
+            character[skill] = num;
+    }
+}
+
+function getSkill(character: ICharacter, skill: string): number | string {
+    if (isValidKey(skill, character)) {
+        return character[skill];
+    } else {
+        return '没有这项属性';
+    }
+}
+
+function isValidKey(key: string, object: ICharacter): key is keyof typeof object {
+    return key in object;
+}
+
 interface ICharacter {
-    [key: string]: string;
+    name: string;
+    hp: number;
+    san: number;
+    magic: number;
+    mov: number;
+    力量: number;
+    体质: number;
+    体型: number;
+    敏捷: number;
+    外貌: number;
+    智力: number;
+    意志: number;
+    教育: number;
+    幸运: number;
 }
 
 interface IPlayers {

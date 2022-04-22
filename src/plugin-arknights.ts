@@ -1,10 +1,10 @@
 import { segment } from 'oicq';
-import { bot } from './index';
-import fs = require('fs');
-import time = require('console');
+import { bot } from './plugin-bot';
+import * as fs from 'fs';
+import * as time from 'console';
 
 let players: IPlayers;
-const arknightsData = 'dist/data/arknights.json';
+const arknightsData = 'data/arknights.json';
 
 initialize();
 
@@ -13,8 +13,15 @@ bot.on('message', function (e) {
         let number = e.raw_message.replace(/[^0-9]/ig, '');
         let name = e.sender.nickname;
 
-        if (!(name in players))
-            players[name] = new Player(name);
+        if (!(name in players)) {
+            players[name].name = name;
+            players[name].sixStars = 0
+            players[name].fiveStars = 0
+            players[name].totalPulls = 0
+            players[name].prePulls = 0 //指抽出货之前的垫刀，我实在不知道怎么翻译
+            players[name].dailyPulls = 0
+            players[name].probability = '2%'
+        }
 
         players[name].prePulls += (number === '') ? 1 : parseInt(number);
         players[name].probability = getProbability(players[name].prePulls);
@@ -33,21 +40,11 @@ bot.on('message', function (e) {
     if (e.raw_message.search('阿米娅设置') != -1) { }
 })
 
-// function Player(name) {
-//     this.name = name
-//     this.sixStars = 0
-//     this.fiveStars = 0
-//     this.totalPulls = 0
-//     this.prePulls = 0 //指抽出货之前的垫刀，我实在不知道怎么翻译
-//     this.dailyPulls = 0
-//     this.probability = '2%'
-// }
-
 interface IPlayers {
-    [key: string]: Player;
+    [key: string]: IPlayer;
 }
 
-class Player {
+interface IPlayer {
     name: string;
     sixStars: number;
     fiveStars: number;
@@ -55,16 +52,6 @@ class Player {
     prePulls: number;
     dailyPulls: number;
     probability: string;
-
-    constructor(name: string) {
-        this.name = name;
-        this.sixStars = 0;
-        this.fiveStars = 0;
-        this.totalPulls = 0;
-        this.prePulls = 0; //指抽出货之前的垫刀，我实在不知道怎么翻译
-        this.dailyPulls = 0;
-        this.probability = '2%';
-    }
 }
 
 function getProbability(num: number): string {

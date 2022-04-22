@@ -1,5 +1,5 @@
 import { segment } from 'oicq';
-import { bot } from './index';
+import { bot } from './plugin-bot';
 
 // 发送图片
 // 向你的机器人发送 image
