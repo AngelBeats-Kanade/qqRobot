@@ -6,8 +6,9 @@
 
 1. 安装 [Node.js](https://nodejs.org/) 14以上版本  
 2. clone到本地并执行 `npm i` 安装依赖
-3. 将 index.js 第二行 `const account = ***` 中的***改为你自己的账号
-4. 执行 `npm run dev` 启动程序
+3. 将 src/plugin-bot.ts 第二行 `const account = ***` 中的***改为你自己的账号
+4. 将 src/plugin-bot.ts 第三行 `const password = ***` 中的***改为你自己的密码
+5. 执行 `npm run dev` 启动程序
 
 ----
 
