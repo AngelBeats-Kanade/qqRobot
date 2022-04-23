@@ -1,7 +1,7 @@
 import { segment } from 'oicq';
 import { bot } from './plugin-bot';
 import * as schedule from 'node-schedule';
-import mock, { S } from 'mockjs';
+import mock from 'mockjs';
 import * as fs from 'fs';
 const random = mock.Random;
 let dataJson: IDataJson = {};

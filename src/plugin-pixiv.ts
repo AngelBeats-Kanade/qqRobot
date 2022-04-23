@@ -162,7 +162,7 @@ function fetchAPictureAndReply(title: string, r18: boolean, e: PrivateMessageEve
         })
 }
 
-async function fetchAPictureByRandomTagAndReply(randomTags: string | string[], r18: boolean, e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent) {
+function fetchAPictureByRandomTagAndReply(randomTags: string | string[], r18: boolean, e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent) {
     let tag: string = '';
 
     for (let i = 0; i < randomTags.length; i++) {
