@@ -199,26 +199,26 @@ function fetchAPictureByRandomTagAndReply(randomTags: string | string[], r18: bo
                     let temp: number;
                     let promiseArr: any[] = [];
 
-                    for (let j = 0; j < 50; j++) {
+                    for (let j = 0; j < data["body"]["illustManga"]["data"].length; j++) {
                         let p: Promise<void> = new Promise<void>((resolve, reject) => {
                             fetch(`https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`, fetchOptions)
                                 .then(data => data.text())
                                 .then(function (text) {
                                     let bookMark: number = parseInt(text.match(/"bookmarkCount":(.+?),"likeCount"/)![1]);
+                                    let datum = data["body"]["illustManga"]["data"][j];
 
                                     if (bookMark > temp) {
-                                        if (!r18 && (data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18') != -1 ||
-                                            data["body"]["illustManga"]["data"][j]["tags"].indexOf('R-18G') != -1)) { }
-                                        else {
+                                        if (!r18 && (datum["tags"].indexOf('R-18') != -1 || datum["tags"].indexOf('R-18G') != -1)) {
+                                        } else {
                                             temp = bookMark;
                                             picture = text.match(/"original":"(.+?)"},"tags"/)![1];
-                                            title = data["body"]["illustManga"]["data"][j]["title"];
-                                            url = `https://www.pixiv.net/artworks/${data["body"]["illustManga"]["data"][j]["id"]}`;
-                                            page = data["body"]["illustManga"]["data"][j]["pageCount"];
-                                            uid = data["body"]["illustManga"]["data"][j]["userId"];
-                                            id = data["body"]["illustManga"]["data"][j]["id"];
-                                            user = data["body"]["illustManga"]["data"][j]["userName"];
-                                            tags = data["body"]["illustManga"]["data"][j]["tags"];
+                                            title = datum["title"];
+                                            url = `https://www.pixiv.net/artworks/${datum["id"]}`;
+                                            page = datum["pageCount"];
+                                            uid = datum["userId"];
+                                            id = datum["id"];
+                                            user = datum["userName"];
+                                            tags = datum["tags"];
                                         }
                                     }
                                     resolve();
