@@ -196,7 +196,7 @@ function fetchAPictureByRandomTagAndReply(randomTags: string | string[], r18: bo
                     let id: string;
                     let user: string;
                     let tags: string[];
-                    let temp: number;
+                    let temp: number = 0;
                     let promiseArr: any[] = [];
 
                     for (let j = 0; j < data["body"]["illustManga"]["data"].length; j++) {
