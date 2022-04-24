@@ -47,38 +47,26 @@ bot.on('message', function (e) {
         );
     }
 
-    if (e.raw_message.startsWith('.r ') || e.raw_message.startsWith('。r ')) {
+    if (e.raw_message.match(/(.|。)r(\d+)(d|hd)(\d+?)/i) != null) {
         const id = e.sender.user_id;
         const name = e.sender.nickname;
-        const command = e.raw_message.split(' ');
-        const frequency = parseInt(command[1]);
+        const frequency = parseInt(e.raw_message.match(/.r(\d+)(d|hd)\d+?/)![1]);
+        const command = e.raw_message.match(/.r(\d+)(d|hd)\d+?/)![2];
+        const numberRegx = /.r\d+(d|hd)(.+?)/i;
+        const number = numberRegx.test(e.raw_message) ? e.raw_message.match(/.r\d+(d|hd)(.+)/)![2] : '100';
         let reply: string;
 
-        if (command.length === 3) {
-            if (command[2] === 'hd') {
-                reply = onRoll(frequency, '100', true);
-            } else {
-                reply = onRoll(frequency, '100', false);
-            }
-        } else {
-            const numbers = command[3];
-
-            if (command[2] === 'hd') {
-                reply = onRoll(frequency, numbers, true);
-            } else {
-                reply = onRoll(frequency, numbers, false);
-            }
-        }
-
-        if (command[2] === 'hd') {
-            this.sendPrivateMsg(id, reply);
-        } else {
+        if (command === 'd') {
+            reply = onRollDice(frequency, number, false);
             e.reply(
                 [
                     segment.at(id, name, false),
                     reply
                 ]
             );
+        } else {
+            reply = onRollDice(frequency, number, true);
+            this.sendPrivateMsg(id, reply);
         }
     }
 
@@ -89,11 +77,11 @@ bot.on('message', function (e) {
         let reply: string;
 
         if (e.raw_message === '.rd' || e.raw_message === '。rd') {
-            reply = onRd('100', false);
+            reply = onRollDiceOnce('100', false);
         }
         else {
             const numbers = e.raw_message.substring(4);
-            reply = onRd(numbers, false);
+            reply = onRollDiceOnce(numbers, false);
         }
 
         e.reply(
@@ -109,11 +97,11 @@ bot.on('message', function (e) {
         let reply: string;
 
         if (e.raw_message === '.rhd' || e.raw_message === '。rhd') {
-            reply = onRd('100', true);
+            reply = onRollDiceOnce('100', true);
         }
         else {
             const numbers = e.raw_message.substring(4);
-            reply = onRd(numbers, true);
+            reply = onRollDiceOnce(numbers, true);
         }
 
         this.sendPrivateMsg(id, reply);
@@ -122,7 +110,7 @@ bot.on('message', function (e) {
     if (e.raw_message.startsWith('。ra') || e.raw_message.startsWith('.ra')) {
         const name = e.sender.nickname;
         const command = e.raw_message;
-        const reply = onRa(name, command);
+        const reply = onRollAction(name, command);
 
         e.reply(
             [
@@ -186,8 +174,8 @@ function onTarots(num: number, position: number): string {
     return words;
 }
 
-function onRoll(frequency: number, numbers: string, hide: boolean): string {
-    if (parseInt(numbers.replace(/[^0-9]/ig, '')) === 0) {
+function onRollDice(frequency: number, number: string, hide: boolean): string {
+    if (parseInt(number.replace(/[^0-9]/ig, '')) <= 0) {
         let reply = '刀客塔，随机数上限必须大于0哦！';
         return reply;
     }
@@ -196,7 +184,7 @@ function onRoll(frequency: number, numbers: string, hide: boolean): string {
 
     for (let i = 0; i < frequency; i++) {
         let flexNum: number;
-        let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ''));
+        let measureNum = parseInt(number.replace(/[^0-9]/ig, ''));
         let randomNum = getRandomIntInclusive(1, measureNum);
         let replyWords = `D${measureNum}=${randomNum}`;
 
@@ -204,9 +192,9 @@ function onRoll(frequency: number, numbers: string, hide: boolean): string {
             replyWords = hide ? `D100=${getRandomIntInclusive(1, 100)}` : `D100=${getRandomIntInclusive(1, 100)}`;
         }
 
-        if (numbers.indexOf('+') != -1) {
-            flexNum = parseInt(numbers.split('+')[1]);
-            measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ''));
+        if (number.indexOf('+') != -1) {
+            flexNum = parseInt(number.split('+')[1]);
+            measureNum = parseInt(number.split("+")[0].replace(/[^0-9]/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
             let allNum = flexNum + randomNum;
             replyWords = hide ?
@@ -214,9 +202,9 @@ function onRoll(frequency: number, numbers: string, hide: boolean): string {
                 `D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}`;
         }
 
-        if (numbers.indexOf('-') != -1) {
-            flexNum = parseInt(numbers.split('-')[1]);
-            measureNum = parseInt(numbers.split('-')[0].replace(/[^0-9]/ig, ''));
+        if (number.indexOf('-') != -1) {
+            flexNum = parseInt(number.split('-')[1]);
+            measureNum = parseInt(number.split('-')[0].replace(/[^0-9]/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
             let allNum = randomNum - flexNum;
             replyWords = hide ?
@@ -230,9 +218,9 @@ function onRoll(frequency: number, numbers: string, hide: boolean): string {
     return reply;
 }
 
-function onRd(numbers: string, hide: boolean): string {
+function onRollDiceOnce(number: string, hide: boolean): string {
     let flexNum: number;
-    let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ''));
+    let measureNum = parseInt(number.replace(/[^0-9]/ig, ''));
     let randomNum = getRandomIntInclusive(1, measureNum);
     let reply = hide ?
         `刀客塔，你要的检定结果来了哦！让我看看，结果为：D${measureNum}=${randomNum}` :
@@ -244,13 +232,13 @@ function onRd(numbers: string, hide: boolean): string {
             "刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100);
     }
 
-    if (measureNum === 0) {
+    if (measureNum <= 0) {
         reply = '刀客塔，随机数上限必须大于0哦！';
     }
 
-    if (numbers.indexOf('+') != -1) {
-        flexNum = parseInt(numbers.split('+')[1]);
-        measureNum = parseInt(numbers.split("+")[0].replace(/[^0-9]/ig, ''));
+    if (number.indexOf('+') != -1) {
+        flexNum = parseInt(number.split('+')[1]);
+        measureNum = parseInt(number.split("+")[0].replace(/[^0-9]/ig, ''));
         randomNum = getRandomIntInclusive(1, measureNum);
         let allNum = flexNum + randomNum;
         reply = hide ?
@@ -258,9 +246,9 @@ function onRd(numbers: string, hide: boolean): string {
             `刀客塔，从罗德岛传回来的结果为D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}`;
     }
 
-    if (numbers.indexOf('-') != -1) {
-        flexNum = parseInt(numbers.split('-')[1]);
-        measureNum = parseInt(numbers.split('-')[0].replace(/[^0-9]/ig, ''));
+    if (number.indexOf('-') != -1) {
+        flexNum = parseInt(number.split('-')[1]);
+        measureNum = parseInt(number.split('-')[0].replace(/[^0-9]/ig, ''));
         randomNum = getRandomIntInclusive(1, measureNum);
         let allNum = randomNum - flexNum;
         reply = hide ?
@@ -271,7 +259,7 @@ function onRd(numbers: string, hide: boolean): string {
     return reply
 }
 
-function onRa(name: string, command: string): string {
+function onRollAction(name: string, command: string): string {
     const numbers = command.substring(4);
     const skill = command.substring(3).replace(/[0-9]|\+|\-/ig, '');
     const randomNum = getRandomIntInclusive(1, 100);
