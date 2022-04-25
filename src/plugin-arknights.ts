@@ -93,15 +93,15 @@ interface IPlayers {
     [key: string]: Player;
 }
 
-interface IPlayer {
-    name: string;
-    sixStars: number;
-    fiveStars: number;
-    totalPulls: number;
-    prePulls: number;
-    dailyPulls: number;
-    probability: string;
-}
+// interface IPlayer {
+//     name: string;
+//     sixStars: number;
+//     fiveStars: number;
+//     totalPulls: number;
+//     prePulls: number;
+//     dailyPulls: number;
+//     probability: string;
+// }
 
 class Player {
     name: string;

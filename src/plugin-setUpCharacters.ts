@@ -9,7 +9,7 @@ initialize();
 
 bot.on('message', function (e) {
     if (e.raw_message === '.st' || e.raw_message === '。st') {
-        let reply = `属性记录：.st (del/clr/show) ([属性名]:[属性值])\n.st hp:9 san:11 magic:11 mov:10 力量:50 体质:55 体型:65 敏捷:45 外貌:70 智力:75 意志:35 教育:65 幸运:75\n.st del hp //删除已保存的属性\n.st clr //清空当前卡\n.st show 灵感 //查看指定属性\n.st show //无参数时查看所有属性，请使用只st加点过技能的半自动人物卡！`;
+        const reply = `属性记录：.st (del/clr/show) ([属性名]:[属性值])\n.st hp:9 san:11 magic:11 mov:10 力量:50 体质:55 体型:65 敏捷:45 外貌:70 智力:75 意志:35 教育:65 幸运:75\n.st del hp //删除已保存的属性\n.st clr //清空当前卡\n.st show 灵感 //查看指定属性\n.st show //无参数时查看所有属性，请使用只st加点过技能的半自动人物卡！`;
         e.reply(
             [
                 reply
@@ -18,12 +18,12 @@ bot.on('message', function (e) {
     }
 
     if (e.raw_message.startsWith('.st ') || e.raw_message.startsWith('。st ')) {
-        let tags = e.raw_message.substring(4);
-        let name = e.sender.nickname;
+        const tags = e.raw_message.substring(4);
+        const name = e.sender.nickname;
         let reply: string;
 
         if (name in players) {
-            let character = players[name][0];
+            const character = players[name][0];
             let roleAttribute = tags.replace(/[0-9]/ig, '');
 
             if (tags.search('del') != -1) {
@@ -58,7 +58,7 @@ bot.on('message', function (e) {
                 reply = setUpSkills(character, roleAttributes, attributeNums);
             }
         } else {
-            let template: ICharacter = {
+            const template: ICharacter = {
                 "hp": 9,
                 "san": 11,
                 "magic": 11,
@@ -96,8 +96,8 @@ bot.on('message', function (e) {
 })
 
 function setUpSkills(character: ICharacter, skills: string[], numbers: string[]): string {
-    let skillLength = skills.length;
-    let numberLength = numbers.length;
+    const skillLength = skills.length;
+    const numberLength = numbers.length;
     if (skillLength === numberLength) {
         let reply = '设置参数成功:';
 
