@@ -180,12 +180,14 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
         return reply;
     }
 
+    let total = 0;
     let reply = hide ? `刀客塔，你要的检定结果来了哦！让我看看，结果为：` : `刀客塔，从罗德岛传回来的结果为`;
 
     for (let i = 0; i < frequency; i++) {
         let flexNum: number;
         let measureNum = parseInt(number.replace(/[^0-9]/ig, ''));
         let randomNum = getRandomIntInclusive(1, measureNum);
+        let allNum = randomNum;
         let replyWords = `D${measureNum}=${randomNum}`;
 
         if (measureNum === NaN) {
@@ -196,7 +198,7 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
             flexNum = parseInt(number.split('+')[1]);
             measureNum = parseInt(number.split("+")[0].replace(/[^0-9]/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
-            let allNum = flexNum + randomNum;
+            allNum = flexNum + randomNum;
             replyWords = hide ?
                 `D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}` :
                 `D${measureNum}+${flexNum}=${randomNum}+${flexNum}=${allNum}`;
@@ -206,16 +208,17 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
             flexNum = parseInt(number.split('-')[1]);
             measureNum = parseInt(number.split('-')[0].replace(/[^0-9]/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
-            let allNum = randomNum - flexNum;
+            allNum = randomNum - flexNum;
             replyWords = hide ?
                 `D${measureNum}-${flexNum}=${randomNum}-${flexNum}=${allNum}` :
                 `D${measureNum}-${flexNum}=${randomNum}-${flexNum}=${allNum}`;
         }
 
-        reply += `(${replyWords})`;
+        total += allNum;
+        reply += `(${replyWords})+`;
     }
 
-    return reply;
+    return `${reply.slice(0, -1)} = ${total}`;
 }
 
 function onRollDiceOnce(number: string, hide: boolean): string {
