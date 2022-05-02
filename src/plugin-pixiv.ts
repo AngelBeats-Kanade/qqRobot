@@ -1,6 +1,5 @@
 import { segment, PrivateMessageEvent, GroupMessageEvent, DiscussMessageEvent } from 'oicq';
 import fetch, { RequestInit } from 'node-fetch';
-import HttpsProxyAgent from 'https-proxy-agent';
 import { bot } from './plugin-bot';
 import { PixivSearchData, PixivRankData } from './pixiv-data';
 
@@ -11,8 +10,6 @@ let dailyTagR18Collection: ITagCollection = {};
 let dailyPictures: ICollection = {};
 let dailyR18Pictures: ICollection = {};
 
-const ip = '127.0.0.1';
-const port = '8889';
 const fetchOptions: RequestInit = {
     headers: {
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
@@ -21,7 +18,6 @@ const fetchOptions: RequestInit = {
     },
     method: 'GET',
     redirect: 'follow',
-    agent: HttpsProxyAgent('http://' + ip + ':' + port),
 };
 
 setInterval(fetchData, 60000);
