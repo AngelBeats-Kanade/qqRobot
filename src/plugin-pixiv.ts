@@ -38,13 +38,13 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
         picture = await fetchPictureByRandomAsync(r18);
     }
     const title = picture.title;
-    const user = picture.user;
+    const artist = picture.artist;
     const url = picture.url;
     const user_id = picture.uid;
     const tags = picture.tags;
     const picture_id = picture.id;
     const head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！';
-    const reply = `${head}\n作者：${user}\nuid：${user_id}\ntitle：${title}\ntags：${tags}\np站链接：https://pixiv.net/artworks/${picture_id}`;
+    const reply = `${head}\n作者：${artist}\nuid：${user_id}\ntitle：${title}\ntags：${tags}\np站链接：https://pixiv.net/artworks/${picture_id}`;
     const replyResult = await e.reply([reply, segment.image(url)]);
 
     if (r18) {
@@ -73,7 +73,7 @@ async function fetchPictureByRandomAsync(r18: boolean) {
 
 interface IPicture {
     url: string;
-    user: string;
+    artist: string;
     uid: number;
     id: number;
     title: string,
