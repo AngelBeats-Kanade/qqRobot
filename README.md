@@ -9,28 +9,19 @@
 **Feature:**
 1. 拓展了骰娘的功能，支持今日人品和塔罗牌抽卡
 2. 支持通过`.st`命令设置COC人物卡
-3. 支持用tag搜索[Pixiv](https://pixiv.net)图片，也支持用排名搜索每日排行榜图片
+3. 支持用tag搜索[Pixiv](https://pixiv.net)图片
 
 ----
 
 **Usage:**
 
-1. 安装 [Node.js](https://nodejs.org/) 14以上版本
+1. 安装 [Node.js](https://nodejs.org/) 16以上版本
 2. 安装 [TypeScript](https://www.typescriptlang.org/) : `npm install typescript -g`
 3. clone到本地并执行 `npm i` 安装依赖
 4. 将 src/plugin-bot.ts 第2行 `const account = ***` 中的***改为你自己的账号
 5. 将 src/plugin-bot.ts 第3行 `const password = ***` 中的***改为你自己的密码
-6. 将 scr/plugin-pixiv.ts 第20行的 `'cookie':'***'`中的***改为你自己登录Pixiv的cookie
-7. qq机器人在获取Pixiv图片时使用了代理，代理使用[https-proxy-agent](https://www.npmjs.com/package/https-proxy-agent)，有需要的请自行更改，不需要的将 src/plugin-pixiv.ts 中第24行的agent删除
-
-        const fetchOptions: RequestInit = {
-            headers: {
-            ...
-            agent: HttpsProxyAgent('http://' + ip + ':' + port),//删除这个
-        };
-
-8. 执行 `npm run build` 编译程序
-9. 执行 `npm run dev` 启动程序
+6. 执行 `npm run build` 编译程序
+7. 执行 `npm run dev` 启动程序
 
 ----
 

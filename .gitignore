@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
-#qq Info
+# qq Info
 data
 built
+
+# Code
+.vscode
