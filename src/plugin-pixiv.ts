@@ -30,25 +30,42 @@ bot.on('message', async function (e) {
 })
 
 async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, r18: boolean, tag?: string) {
-    let picture: IPicture;
+    let response: IPicture | number;
     if (tag) {
         const randomTags = tag.split(' ');
-        picture = await fetchPictureByTagAsync(randomTags, r18);
+        response = await fetchPictureByTagAsync(randomTags, r18);
     } else {
-        picture = await fetchPictureByRandomAsync(r18);
+        response = await fetchPictureByRandomAsync(r18);
     }
-    const title = picture.title;
-    const artist = picture.artist;
-    const url = picture.url;
-    const user_id = picture.uid;
-    const tags = picture.tags;
-    const picture_id = picture.id;
-    const head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！';
-    const reply = `${head}\n作者：${artist}\nuid：${user_id}\ntitle：${title}\ntags：${tags}\np站链接：https://pixiv.net/artworks/${picture_id}`;
-    const replyResult = await e.reply([reply, segment.image(url)]);
+    if (typeof response != 'number') {
+        const picture = response;
+        const title = picture.title;
+        const artist = picture.artist;
+        const url = picture.url;
+        const user_id = picture.uid;
+        const tags = picture.tags;
+        const picture_id = picture.id;
+        const head = r18 ? '色图来了！嘿嘿嘿～' : '二次元图片来了！';
+        const reply = `${head}\n作者：${artist}\nuid：${user_id}\ntitle：${title}\ntags：${tags}\np站链接：https://pixiv.net/artworks/${picture_id}`;
+        const replyResult = await e.reply([reply, segment.image(url)]);
 
-    if (r18) {
-        setTimeout(() => { bot.deleteMsg(replyResult["message_id"]); }, 10000);
+        if (r18) {
+            setTimeout(() => { bot.deleteMsg(replyResult["message_id"]); }, 10000);
+        }
+    } else {
+        switch (response) {
+            case 404:
+                e.reply('刀客塔，换个tag冲吧！');
+                break;
+
+            case 500:
+                e.reply('刀客塔慢点冲，阿米娅要受不住了！');
+                break;
+
+            default:
+                e.reply('刀客塔，换个tag冲吧！');
+                break;
+        }
     }
 }
 
@@ -56,10 +73,13 @@ async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
     const tagList = typeof tag === 'string' ? tag : tag.join(' ');
     const url = r18 ? `https://angelbeats-kanade.com/api/pixiv/getbytag?tags=${tagList}&r18=true` : `https://angelbeats-kanade.com/api/pixiv/getbytag?tags=${tagList}`;
     const response = await fetch(url);
-    const promise = await response.json();
-    const picture = await (promise as Promise<IPicture>);
-
-    return picture;
+    if (response.status === 200) {
+        const promise = await response.json();
+        const picture = await (promise as Promise<IPicture>);
+        return picture;
+    } else {
+        return response.status;
+    }
 }
 
 async function fetchPictureByRandomAsync(r18: boolean) {
