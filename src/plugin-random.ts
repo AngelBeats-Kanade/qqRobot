@@ -1,8 +1,9 @@
-import { segment } from 'oicq';
-import { bot } from './plugin-bot';
+import {segment} from 'oicq';
+import {bot} from './plugin-bot';
 import * as schedule from 'node-schedule';
 import mock from 'mockjs';
 import * as fs from 'fs';
+
 const random = mock.Random;
 let dataJson: IDataJson = {};
 
@@ -176,8 +177,7 @@ function onTarots(num: number, position: number): string {
 
 function onRollDice(frequency: number, number: string, hide: boolean): string {
     if (parseInt(number.replace(/[^0-9]/ig, '')) <= 0) {
-        let reply = '刀客塔，随机数上限必须大于0哦！';
-        return reply;
+        return '刀客塔，随机数上限必须大于0哦！';
     }
 
     let total = 0;
