@@ -70,7 +70,7 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
 }
 
 async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
-    const tagList = typeof tag === 'string' ? tag : tag.join('-');
+    const tagList = typeof tag === 'string' ? tag : tag.join(' ');
     const url = r18 ? `https://angelbeats.site/api/Pixiv/r18/tag/${tagList}` : `https://angelbeats.site/api/Pixiv/daily/tag/${tagList}`;
     const response = await fetch(url);
     if (response.status === 200) {
