@@ -176,7 +176,7 @@ function onTarots(num: number, position: number): string {
 }
 
 function onRollDice(frequency: number, number: string, hide: boolean): string {
-    if (parseInt(number.replace(/[^0-9]/ig, '')) <= 0) {
+    if (parseInt(number.replace(/\D/ig, '')) <= 0) {
         return '刀客塔，随机数上限必须大于0哦！';
     }
 
@@ -185,18 +185,18 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
 
     for (let i = 0; i < frequency; i++) {
         let flexNum: number;
-        let measureNum = parseInt(number.replace(/[^0-9]/ig, ''));
+        let measureNum = parseInt(number.replace(/\D/ig, ''));
         let randomNum = getRandomIntInclusive(1, measureNum);
         let allNum = randomNum;
         let replyWords = `D${measureNum}=${randomNum}`;
 
-        if (measureNum === NaN) {
+        if (isNaN(measureNum)) {
             replyWords = hide ? `D100=${getRandomIntInclusive(1, 100)}` : `D100=${getRandomIntInclusive(1, 100)}`;
         }
 
         if (number.indexOf('+') != -1) {
             flexNum = parseInt(number.split('+')[1]);
-            measureNum = parseInt(number.split("+")[0].replace(/[^0-9]/ig, ''));
+            measureNum = parseInt(number.split("+")[0].replace(/\D/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
             allNum = flexNum + randomNum;
             replyWords = hide ?
@@ -206,7 +206,7 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
 
         if (number.indexOf('-') != -1) {
             flexNum = parseInt(number.split('-')[1]);
-            measureNum = parseInt(number.split('-')[0].replace(/[^0-9]/ig, ''));
+            measureNum = parseInt(number.split('-')[0].replace(/\D/ig, ''));
             randomNum = getRandomIntInclusive(1, measureNum);
             allNum = randomNum - flexNum;
             replyWords = hide ?
@@ -223,13 +223,13 @@ function onRollDice(frequency: number, number: string, hide: boolean): string {
 
 function onRollDiceOnce(number: string, hide: boolean): string {
     let flexNum: number;
-    let measureNum = parseInt(number.replace(/[^0-9]/ig, ''));
+    let measureNum = parseInt(number.replace(/\D/ig, ''));
     let randomNum = getRandomIntInclusive(1, measureNum);
     let reply = hide ?
         `刀客塔，你要的检定结果来了哦！让我看看，结果为：D${measureNum}=${randomNum}` :
         `刀客塔，从罗德岛传回来的结果为D${measureNum}=${randomNum}`;
 
-    if (measureNum === NaN) {
+    if (isNaN(measureNum)) {
         reply = hide ?
             `刀客塔，你要的检定结果来了哦！让我看看，结果为：D${measureNum}=${randomNum}` :
             "刀客塔，从罗德岛传回来的结果为D100=" + getRandomIntInclusive(1, 100);
@@ -241,7 +241,7 @@ function onRollDiceOnce(number: string, hide: boolean): string {
 
     if (number.indexOf('+') != -1) {
         flexNum = parseInt(number.split('+')[1]);
-        measureNum = parseInt(number.split("+")[0].replace(/[^0-9]/ig, ''));
+        measureNum = parseInt(number.split("+")[0].replace(/\D/ig, ''));
         randomNum = getRandomIntInclusive(1, measureNum);
         let allNum = flexNum + randomNum;
         reply = hide ?
@@ -251,7 +251,7 @@ function onRollDiceOnce(number: string, hide: boolean): string {
 
     if (number.indexOf('-') != -1) {
         flexNum = parseInt(number.split('-')[1]);
-        measureNum = parseInt(number.split('-')[0].replace(/[^0-9]/ig, ''));
+        measureNum = parseInt(number.split('-')[0].replace(/\D/ig, ''));
         randomNum = getRandomIntInclusive(1, measureNum);
         let allNum = randomNum - flexNum;
         reply = hide ?
@@ -264,23 +264,23 @@ function onRollDiceOnce(number: string, hide: boolean): string {
 
 function onRollAction(name: string, command: string): string {
     const numbers = command.substring(4);
-    const skill = command.substring(3).replace(/[0-9]|\+|\-/ig, '');
+    const skill = command.substring(3).replace(/\d|\+|-/ig, '');
     const randomNum = getRandomIntInclusive(1, 100);
     let flexNum: number = 0;
-    let measureNum = parseInt(numbers.replace(/[^0-9]/ig, ''));
+    let measureNum = parseInt(numbers.replace(/\D/ig, ''));
     let bigFailureNum = 96;
     let replyWords = '成功';
     let reply: string;
 
     if (numbers.indexOf('+') != -1) {
         flexNum = parseInt(numbers.split('+')[1]);
-        measureNum = parseInt(numbers.split('+')[0].replace(/[^0-9]/ig, ''));
+        measureNum = parseInt(numbers.split('+')[0].replace(/\D/ig, ''));
         measureNum += flexNum;
     }
 
     if (numbers.indexOf('-') != -1) {
         flexNum = parseInt(numbers.split('-')[1]);
-        measureNum = parseInt(numbers.split("-")[0].replace(/[^0-9]/ig, ''));
+        measureNum = parseInt(numbers.split("-")[0].replace(/\D/ig, ''));
         measureNum -= flexNum;
     }
 
@@ -309,7 +309,7 @@ function onRollAction(name: string, command: string): string {
 }
 
 function onName(tags: string): string {
-    const num = parseInt(tags.replace(/[^0-9|^\.|^\-]/ig, ''));
+    const num = parseInt(tags.replace(/[^\d|^\.|^\-]/ig, ''));
     let reply: string;
     let names: INames = {};
 
