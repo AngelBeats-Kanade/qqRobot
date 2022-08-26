@@ -1,6 +1,6 @@
-import { segment, PrivateMessageEvent, GroupMessageEvent, DiscussMessageEvent } from 'oicq';
+import {DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment} from 'oicq';
 import fetch from 'node-fetch';
-import { bot } from './plugin-bot';
+import {bot} from './plugin-bot';
 
 
 bot.on('message', async function (e) {
@@ -55,15 +55,15 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
     } else {
         switch (response) {
             case 404:
-                e.reply('刀客塔，换个tag冲吧！');
+                await e.reply('刀客塔，换个tag冲吧！');
                 break;
 
             case 500:
-                e.reply('刀客塔慢点冲，阿米娅要受不住了！');
+                await e.reply('刀客塔慢点冲，阿米娅要受不住了！');
                 break;
 
             default:
-                e.reply('刀客塔，换个tag冲吧！');
+                await e.reply('刀客塔，换个tag冲吧！');
                 break;
         }
     }
@@ -75,8 +75,7 @@ async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
     const response = await fetch(url);
     if (response.status === 200) {
         const promise = await response.json();
-        const picture = await (promise as Promise<IPicture>);
-        return picture;
+        return await (promise as Promise<IPicture>);
     } else {
         return response.status;
     }
@@ -86,9 +85,7 @@ async function fetchPictureByRandomAsync(r18: boolean) {
     const url = r18 ? `https://angelbeats-kanade.com/api/Pixiv/r18/random` : `https://angelbeats-kanade.com/api/Pixiv/daily/random`;
     const response = await fetch(url);
     const promise = await response.json();
-    const picture = await (promise as Promise<IPicture>);
-
-    return picture;
+    return await (promise as Promise<IPicture>);
 }
 
 interface IPicture {
