@@ -1,6 +1,6 @@
-import {DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment} from 'oicq';
+import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment } from 'oicq';
 import fetch from 'node-fetch';
-import {bot} from './plugin-bot';
+import { bot } from './plugin-bot';
 
 
 bot.on('message', async function (e) {
