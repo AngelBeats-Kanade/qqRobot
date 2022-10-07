@@ -71,7 +71,7 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
 
 async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
     const tagList = typeof tag === 'string' ? tag : tag.join(' ');
-    const url = r18 ? `https://angelbeats-kanade.com/api/Pixiv/r18/tag/${tagList}` : `https://angelbeats-kanade.com/api/Pixiv/daily/tag/${tagList}`;
+    const url = r18 ? `https://pixiv-ab.tk/api/Pixiv/r18/tag/${tagList}` : `https://pixiv-ab.tk/api/Pixiv/daily/tag/${tagList}`;
     const response = await fetch(url);
     if (response.status === 200) {
         const promise = await response.json();
@@ -82,7 +82,7 @@ async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
 }
 
 async function fetchPictureByRandomAsync(r18: boolean) {
-    const url = r18 ? `https://angelbeats-kanade.com/api/Pixiv/r18/random` : `https://angelbeats-kanade.com/api/Pixiv/daily/random`;
+    const url = r18 ? `https://pixiv-ab.tk/api/Pixiv/r18/random` : `https://pixiv-ab.tk/api/Pixiv/daily/random`;
     const response = await fetch(url);
     const promise = await response.json();
     return await (promise as Promise<IPicture>);
