@@ -79,10 +79,12 @@ bot.on('message', function (e) {
 
         if (e.raw_message === '.rd' || e.raw_message === '。rd') {
             reply = onRollDiceOnce('100', false);
-        }
-        else {
+        } else {
             const numbers = e.raw_message.substring(4);
-            reply = onRollDiceOnce(numbers, false);
+            if (numbers != null)
+                reply = onRollDiceOnce(numbers, false);
+            else
+                reply = '刀客塔，请在输入命令后添加空格哦！';
         }
 
         e.reply(
@@ -99,10 +101,12 @@ bot.on('message', function (e) {
 
         if (e.raw_message === '.rhd' || e.raw_message === '。rhd') {
             reply = onRollDiceOnce('100', true);
-        }
-        else {
+        } else {
             const numbers = e.raw_message.substring(4);
-            reply = onRollDiceOnce(numbers, true);
+            if (numbers != null)
+                reply = onRollDiceOnce(numbers, true);
+            else
+                reply = '刀客塔，请在输入命令后添加空格哦！';
         }
 
         this.sendPrivateMsg(id, reply);

@@ -11,7 +11,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "https-proxy-agent": "^5.0.1",
     "mockjs": "^1.1.0",
     "node-fetch": "^3.2.3",
     "node-schedule": "^2.1.0",
