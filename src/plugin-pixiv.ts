@@ -1,7 +1,6 @@
 import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment } from 'oicq';
 import fetch from 'node-fetch';
-import { bot } from './plugin-bot';
-
+import { bot } from './plugin-bot.js';
 
 bot.on('message', async function (e) {
     if (e.raw_message === '来点二次元') {

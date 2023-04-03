@@ -11,6 +11,6 @@ const bot = createClient(parseInt(account));
 bot.on("system.login.slider", function () {
     console.log("输入ticket：")
     process.stdin.once("data", ticket => this.submitSlider(String(ticket).trim()))
-}).login(password)
+}).login(password);
 
 export { bot };

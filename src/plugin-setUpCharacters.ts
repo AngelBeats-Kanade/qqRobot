@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { bot } from './plugin-bot';
+import { bot } from './plugin-bot.js';
 
 let players: IPlayers = {};
 

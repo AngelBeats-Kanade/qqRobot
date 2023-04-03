@@ -1,5 +1,5 @@
 import { segment } from 'oicq';
-import { bot } from './plugin-bot';
+import { bot } from './plugin-bot.js';
 import * as schedule from 'node-schedule';
 import mock from 'mockjs';
 import * as fs from 'fs';

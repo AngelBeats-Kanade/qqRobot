@@ -1,5 +1,5 @@
 import { segment } from 'oicq';
-import { bot } from './plugin-bot';
+import { bot } from './plugin-bot.js';
 
 // 收到好友申请
 bot.on('request.friend.add', async function (e) {

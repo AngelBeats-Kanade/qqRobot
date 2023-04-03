@@ -1,4 +1,4 @@
-import { bot } from './plugin-bot';
+import { bot } from './plugin-bot.js';
 
 bot.on('system.online', function () {
 	// 你的账号已上线，你可以做任何事
