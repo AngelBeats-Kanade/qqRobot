@@ -1,6 +1,6 @@
-import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment } from 'oicq';
+import {DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment} from 'oicq';
 import fetch from 'node-fetch';
-import { bot } from './plugin-bot.js';
+import {bot} from './plugin-bot.js';
 
 bot.on('message', async function (e) {
     if (e.raw_message === '来点二次元') {
@@ -24,7 +24,7 @@ bot.on('message', async function (e) {
     }
 
     if (e.raw_message === '阿米娅，告诉我怎么用tag搜索' || e.raw_message === '.help tag') {
-        e.reply(`刀客塔，阿米娅的tag搜索有两种方式。第一种是直接输入tag（仅支持单独tag），实例：“来点二次元 明日方舟”；第二种是输入数字，数字代表的是该图片在p站日榜的排名，实例：“来点二次元 1”，即代表取p站日榜第一名的图片。非r18搜索支持1~500名，r18搜索支持1~100名。`);
+        await e.reply(`刀客塔，阿米娅的tag搜索有两种方式。第一种是直接输入tag（仅支持单独tag），实例：“来点二次元 明日方舟”；第二种是输入数字，数字代表的是该图片在p站日榜的排名，实例：“来点二次元 1”，即代表取p站日榜第一名的图片。非r18搜索支持1~500名，r18搜索支持1~100名。`);
     }
 })
 
@@ -49,7 +49,9 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
         const replyResult = await e.reply([reply, segment.image(url)]);
 
         if (r18) {
-            setTimeout(() => { bot.deleteMsg(replyResult["message_id"]); }, 10000);
+            setTimeout(() => {
+                bot.deleteMsg(replyResult["message_id"]);
+            }, 10000);
         }
     } else {
         switch (response) {

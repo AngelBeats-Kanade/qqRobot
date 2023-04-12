@@ -1,25 +1,26 @@
-import { segment } from 'oicq';
-import { bot } from './plugin-bot.js';
+import {segment} from 'oicq';
+import {bot} from './plugin-bot.js';
 import * as schedule from 'node-schedule';
 import mock from 'mockjs';
 import * as fs from 'fs';
+import {getSkill, getCharacteristic, skillList, characteristicList} from './plugin-setUpCharacters.js';
 
 const random = mock.Random;
 let dataJson: IDataJson = {};
 
-const tarots = JSON.parse(fs.readFileSync('resources/tarots.json').toString());
+const tarots = JSON.parse(fs.readFileSync('resource/tarots.json').toString());
 
 schedule.scheduleJob('cleanDataEveryDay', '0 0 0 * * *', function () {
     dataJson = {};
 })
 
-bot.on('message', function (e) {
+bot.on('message', async function (e) {
     if (e.raw_message === '.jrrp' || e.raw_message === '。jrrp') {
         const id = e.sender.user_id;
         const name = e.sender.nickname;
         const reply = onJrrp(name, dataJson);
 
-        e.reply(
+        await e.reply(
             [
                 segment.at(id, name, false),
                 reply
@@ -34,14 +35,14 @@ bot.on('message', function (e) {
         const position = getRandomIntInclusive(0, 1);
         const words = onTarots(num, position);
 
-        e.reply(
+        await e.reply(
             [
                 segment.at(id, name, false),
                 words
             ]
         );
 
-        e.reply(
+        await e.reply(
             [
                 '' + tarots[num.toString()][position]
             ]
@@ -59,7 +60,7 @@ bot.on('message', function (e) {
 
         if (command === 'd') {
             reply = onRollDice(frequency, number, false);
-            e.reply(
+            await e.reply(
                 [
                     segment.at(id, name, false),
                     reply
@@ -67,7 +68,7 @@ bot.on('message', function (e) {
             );
         } else {
             reply = onRollDice(frequency, number, true);
-            this.sendPrivateMsg(id, reply);
+            await this.sendPrivateMsg(id, reply);
         }
     }
 
@@ -87,7 +88,7 @@ bot.on('message', function (e) {
                 reply = '刀客塔，请在输入命令后添加空格哦！';
         }
 
-        e.reply(
+        await e.reply(
             [
                 segment.at(id, name, false),
                 reply
@@ -109,15 +110,16 @@ bot.on('message', function (e) {
                 reply = '刀客塔，请在输入命令后添加空格哦！';
         }
 
-        this.sendPrivateMsg(id, reply);
+        await this.sendPrivateMsg(id, reply);
     }
 
     if (e.raw_message.startsWith('。ra') || e.raw_message.startsWith('.ra')) {
+        const id = e.sender.user_id;
         const name = e.sender.nickname;
         const command = e.raw_message;
-        const reply = onRollAction(name, command);
+        const reply = await onRollAction(name, id, command);
 
-        e.reply(
+        await e.reply(
             [
                 reply
             ]
@@ -128,7 +130,7 @@ bot.on('message', function (e) {
         const tags = e.raw_message.substring(6);
         const reply = onName(tags);
 
-        e.reply(
+        await e.reply(
             [
                 reply
             ]
@@ -266,48 +268,56 @@ function onRollDiceOnce(number: string, hide: boolean): string {
     return reply
 }
 
-function onRollAction(name: string, command: string): string {
-    const numbers = command.substring(4);
-    const skill = command.substring(3).replace(/\d|\+|-/ig, '');
+async function onRollAction(name: string, id: number, command: string): Promise<string> {
+    const number = command.substring(4);
+    const skill = command.substring(4).replace(/\d|\+|-/ig, '');
     const randomNum = getRandomIntInclusive(1, 100);
     let flexNum: number = 0;
-    let measureNum = parseInt(numbers.replace(/\D/ig, ''));
+    let measureNum = parseInt(number.replace(/\D/ig, ''));
     let bigFailureNum = 96;
     let replyWords = '成功';
     let reply: string;
 
-    if (numbers.indexOf('+') != -1) {
-        flexNum = parseInt(numbers.split('+')[1]);
-        measureNum = parseInt(numbers.split('+')[0].replace(/\D/ig, ''));
-        measureNum += flexNum;
+    if (Number.isNaN(measureNum)) {
+        if (skill in characteristicList) {
+            measureNum = await getCharacteristic(id.toString(), skill);
+        } else if (skill in skillList) {
+            measureNum = await getSkill(id.toString(), skill);
+        }
     }
+    if (!Number.isNaN(measureNum)) {
+        if (number.indexOf('+') != -1) {
+            flexNum = parseInt(number.split('+')[1]);
+            measureNum = parseInt(number.split('+')[0].replace(/\D/ig, ''));
+            measureNum += flexNum;
+        }
 
-    if (numbers.indexOf('-') != -1) {
-        flexNum = parseInt(numbers.split('-')[1]);
-        measureNum = parseInt(numbers.split("-")[0].replace(/\D/ig, ''));
-        measureNum -= flexNum;
-    }
+        if (number.indexOf('-') != -1) {
+            flexNum = parseInt(number.split('-')[1]);
+            measureNum = parseInt(number.split("-")[0].replace(/\D/ig, ''));
+            measureNum -= flexNum;
+        }
 
-    if ((measureNum - flexNum) >= 60)
-        bigFailureNum = 100;
+        if ((measureNum - flexNum) >= 60)
+            bigFailureNum = 100;
 
-    if (measureNum < randomNum) {
-        replyWords = '失败';
-        if (randomNum >= bigFailureNum)
-            replyWords = '大失败';
+        if (measureNum < randomNum) {
+            replyWords = '失败';
+            if (randomNum >= bigFailureNum)
+                replyWords = '大失败';
+        } else {
+            if (randomNum <= measureNum / 2)
+                replyWords = '困难成功';
+            if (randomNum <= measureNum / 5)
+                replyWords = '极难成功';
+            if (randomNum === 1)
+                replyWords = '大成功';
+        }
+
+        reply = `${name}进行的数值鉴定结果:1d100=${randomNum}/${measureNum} ${skill}${replyWords}`;
     } else {
-        if (randomNum <= measureNum / 2)
-            replyWords = '困难成功';
-        if (randomNum <= measureNum / 5)
-            replyWords = '极难成功';
-        if (randomNum === 1)
-            replyWords = '大成功';
+        reply = '刀客塔，是我不能理解的命令呢。';
     }
-
-    reply = `${name}进行的数值鉴定结果:1d100=${randomNum}/${measureNum} ${skill}${replyWords}`;
-
-    if (Number.isNaN(measureNum))
-        reply = '刀客塔，我听不懂你在说什么，是我不能理解的命令呢?'
 
     return reply;
 }

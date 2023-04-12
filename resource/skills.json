@@ -1,0 +1,314 @@
+{
+  "会计": {
+    "name": "Accounting",
+    "group": "common"
+  },
+  "表演": {
+    "name": "Acting",
+    "group": "art_and_craft"
+  },
+  "动物驯养": {
+    "name": "AnimalHandling",
+    "group": "common"
+  },
+  "人类学": {
+    "name": "Anthropology",
+    "group": "common"
+  },
+  "估价": {
+    "name": "Appraise",
+    "group": "common"
+  },
+  "考古学": {
+    "name": "Archaeology",
+    "group": "common"
+  },
+  "炮术": {
+    "name": "Artillery",
+    "group": "uncommon"
+  },
+  "天文学": {
+    "name": "Astronomy",
+    "group": "common"
+  },
+  "斧": {
+    "name": "Axe",
+    "group": "fighting"
+  },
+  "生物学": {
+    "name": "Biology",
+    "group": "science"
+  },
+  "植物学": {
+    "name": "Botany",
+    "group": "science"
+  },
+  "弓": {
+    "name": "Bow",
+    "group": "firearms"
+  },
+  "斗殴": {
+    "name": "Brawl",
+    "group": "fighting"
+  },
+  "链锯": {
+    "name": "Chainsaw",
+    "group": "fighting"
+  },
+  "取悦": {
+    "name": "Charm",
+    "group": "common"
+  },
+  "化学": {
+    "name": "Chemistry",
+    "group": "science"
+  },
+  "攀爬": {
+    "name": "Climb",
+    "group": "common"
+  },
+  "计算机使用": {
+    "name": "ComputerUse",
+    "group": "modern"
+  },
+  "信用评级": {
+    "name": "CreditRating",
+    "group": "common"
+  },
+  "密码学": {
+    "name": "Cryptography",
+    "group": "science"
+  },
+  "克苏鲁神话": {
+    "name": "CthulhuMythos",
+    "group": "common"
+  },
+  "爆破": {
+    "name": "Demolitions",
+    "group": "uncommon"
+  },
+  "乔装": {
+    "name": "Disguise",
+    "group": "common"
+  },
+  "潜水": {
+    "name": "Diving",
+    "group": "common"
+  },
+  "闪避": {
+    "name": "Dodge",
+    "group": "common"
+  },
+  "汽车驾驶": {
+    "name": "DriveAuto",
+    "group": "common"
+  },
+  "电器维修": {
+    "name": "ElectricalRepair",
+    "group": "common"
+  },
+  "电子学": {
+    "name": "Electronics",
+    "group": "modern"
+  },
+  "话术": {
+    "name": "FastTalk",
+    "group": "common"
+  },
+  "美术": {
+    "name": "FineArt",
+    "group": "art_and_craft"
+  },
+  "急救": {
+    "name": "FirstAid",
+    "group": "common"
+  },
+  "连枷": {
+    "name": "Flail",
+    "group": "fighting"
+  },
+  "火焰喷射器": {
+    "name": "Flamethrower",
+    "group": "firearms"
+  },
+  "司法科学": {
+    "name": "Forensics",
+    "group": "science"
+  },
+  "伪造": {
+    "name": "Forgery",
+    "group": "art_and_craft"
+  },
+  "绞索": {
+    "name": "Garrote",
+    "group": "fighting"
+  },
+  "地质学": {
+    "name": "Geology",
+    "group": "science"
+  },
+  "手枪": {
+    "name": "Handgun",
+    "group": "firearms"
+  },
+  "重武器": {
+    "name": "HeavyWeapons",
+    "group": "firearms"
+  },
+  "历史": {
+    "name": "History",
+    "group": "common"
+  },
+  "催眠": {
+    "name": "Hypnosis",
+    "group": "uncommon"
+  },
+  "恐吓": {
+    "name": "Intimidate",
+    "group": "common"
+  },
+  "跳跃": {
+    "name": "Jump",
+    "group": "common"
+  },
+  "母语": {
+    "name": "Language",
+    "group": "common"
+  },
+  "法律": {
+    "name": "Law",
+    "group": "common"
+  },
+  "图书馆使用": {
+    "name": "LibraryUse",
+    "group": "common"
+  },
+  "聆听": {
+    "name": "Listen",
+    "group": "common"
+  },
+  "锁匠": {
+    "name": "Locksmith",
+    "group": "common"
+  },
+  "机枪": {
+    "name": "MachineGun",
+    "group": "firearms"
+  },
+  "数学": {
+    "name": "Mathematics",
+    "group": "science"
+  },
+  "机械维修": {
+    "name": "MechanicalRepair",
+    "group": "common"
+  },
+  "医学": {
+    "name": "Medicine",
+    "group": "common"
+  },
+  "气象学": {
+    "name": "Meteorology",
+    "group": "science"
+  },
+  "博物学": {
+    "name": "NaturalWorld",
+    "group": "common"
+  },
+  "导航": {
+    "name": "Navigate",
+    "group": "common"
+  },
+  "神秘学": {
+    "name": "Occult",
+    "group": "common"
+  },
+  "操作重型机械": {
+    "name": "OperateHeavyMachinery",
+    "group": "common"
+  },
+  "说服": {
+    "name": "Persuade",
+    "group": "common"
+  },
+  "药学": {
+    "name": "Pharmacy",
+    "group": "science"
+  },
+  "摄影": {
+    "name": "Photography",
+    "group": "art_and_craft"
+  },
+  "物理": {
+    "name": "Physics",
+    "group": "science"
+  },
+  "精神分析": {
+    "name": "Psychoanalysis",
+    "group": "common"
+  },
+  "心理学": {
+    "name": "Psychology",
+    "group": "common"
+  },
+  "读唇": {
+    "name": "ReadLips",
+    "group": "uncommon"
+  },
+  "骑术": {
+    "name": "Ride",
+    "group": "common"
+  },
+  "步枪": {
+    "name": "Rie",
+    "group": "firearms"
+  },
+  "霰弹枪": {
+    "name": "Shotgun",
+    "group": "firearms"
+  },
+  "妙手": {
+    "name": "SleightOfHand",
+    "group": "common"
+  },
+  "矛": {
+    "name": "Spear",
+    "group": "firearms"
+  },
+  "侦查": {
+    "name": "SpotHidden",
+    "group": "common"
+  },
+  "潜行": {
+    "name": "Stealth",
+    "group": "common"
+  },
+  "冲锋枪": {
+    "name": "SubmachineGun",
+    "group": "firearms"
+  },
+  "剑": {
+    "name": "Sword",
+    "group": "fighting"
+  },
+  "游泳": {
+    "name": "Swim",
+    "group": "common"
+  },
+  "投掷": {
+    "name": "Throw",
+    "group": "common"
+  },
+  "追踪": {
+    "name": "Track",
+    "group": "common"
+  },
+  "鞭": {
+    "name": "Whip",
+    "group": "fighting"
+  },
+  "动物学": {
+    "name": "Zoology",
+    "group": "science"
+  }
+}

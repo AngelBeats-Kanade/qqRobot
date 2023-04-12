@@ -1,170 +1,143 @@
+import knex from 'knex';
 import * as fs from 'fs';
-import { bot } from './plugin-bot.js';
+import {bot} from './plugin-bot.js';
 
-let players: IPlayers = {};
-
-const playersData = 'data/playersData.json'
-
-initialize();
-
-bot.on('message', function (e) {
-    if (e.raw_message === '.st' || e.raw_message === '。st') {
-        const reply = `属性记录：.st (del/clr/show) ([属性名]:[属性值])\n.st hp:9 san:11 magic:11 mov:10 力量:50 体质:55 体型:65 敏捷:45 外貌:70 智力:75 意志:35 教育:65 幸运:75\n.st del hp //删除已保存的属性\n.st clr //清空当前卡\n.st show 灵感 //查看指定属性\n.st show //无参数时查看所有属性，请使用只st加点过技能的半自动人物卡！`;
-        e.reply(
-            [
-                reply
-            ]
-        );
+const config = {
+    client: 'better-sqlite3',
+    connection: {
+        filename: './data/coc_characters.db'
     }
+};
 
+const skillList: SkillList = JSON.parse(fs.readFileSync('resource/skills.json').toString());
+const characteristicList: CharacteristicList = JSON.parse(fs.readFileSync('resource/characteristics.json').toString());
+const skillGroups = ['common', 'uncommon', 'art_and_craft', 'science', 'fighting', 'firearms', 'modern'];
+
+const knexInstance = knex.knex(config);
+
+await initialize();
+
+bot.on('message', async function (e) {
     if (e.raw_message.startsWith('.st ') || e.raw_message.startsWith('。st ')) {
-        const tags = e.raw_message.substring(4);
-        const name = e.sender.nickname;
-        let reply: string;
+        const data = e.raw_message.substring(4);
+        const owner = e.sender.user_id.toString();
+        const characteristics_and_skills = data.split(/\d+/i).filter(item => item !== '');
+        const numbers = data.split(/\D+/i).filter(item => item !== '');
 
-        if (name in players) {
-            const character = players[name][0];
-            let roleAttribute = tags.replace(/[0-9]/ig, '');
+        await knexInstance('characters').where('owner', owner).update('enable', false);
 
-            if (tags.search('del') != -1) {
-                roleAttribute = roleAttribute.substring(3).replace(' ', '');
-                setUpSkill(character, roleAttribute, 0);
-                reply = `删除${roleAttribute}成功！`;
-            }
-            else if (tags.search('clr') != -1) {
-                delete (players[name]);
-                reply = `清除卡成功！`;
-            }
-            else if (tags.search('show') != -1) {
-                if (tags.split('show')[1] != '') {
-                    roleAttribute = roleAttribute.substring(4).replace(' ', '');
-                    reply = `${roleAttribute}=${getSkill(character, roleAttribute)}`;
-                } else {
-                    reply = `hp:${character.hp}\nsan:${character.san}\nmagic:${character.magic}\nmov:${character.mov}\n力量:${character.力量}\n体质:${character.体质}\n体型:${character.体型}\n敏捷:${character.敏捷}\n外貌:${character.外貌}\n智力:${character.智力}\n意志:${character.意志}\n教育:${character.教育}\n幸运:${character.幸运}`;
-                }
-            } else {
-                const data = tags.split(' ');
-                let roleAttributes: string[] = [];
-                let attributeNums: string[] = [];
+        const exist_characters_num = (await knexInstance('characters').where('owner', owner).count('owner'))[0]['count(`owner`)'];
 
-                for (let i = 0; i < data.length; i++) {
-                    const skill = data[i].split(':')[0];
-                    const num = data[i].split(':')[1];
-
-                    roleAttributes.push(skill);
-                    attributeNums.push(num);
-                }
-
-                reply = setUpSkills(character, roleAttributes, attributeNums);
-            }
-        } else {
-            const template: ICharacter = {
-                "hp": 9,
-                "san": 11,
-                "magic": 11,
-                "mov": 10,
-                "力量": 50,
-                "体质": 55,
-                "体型": 65,
-                "敏捷": 45,
-                "外貌": 70,
-                "智力": 75,
-                "意志": 35,
-                "教育": 65,
-                "幸运": 75,
-            };
-
-            players[name] = [template];
-            reply = '未查询到卡片，正在初始化卡片...\n初始化卡片成功！';
-        }
-
-        const data = JSON.stringify(players, null, 2);
-
-        fs.writeFile(playersData, data, (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log('JSON data is saved.');
+        const insertedRow = await knexInstance('characters').insert({
+            owner: owner,
+            name: owner + '_' + exist_characters_num,
+            enable: true
         });
 
-        e.reply(
-            [
-                reply
-            ]
-        );
+        for (const group of skillGroups) {
+            await knexInstance(group).insert({
+                character_id: insertedRow[0]
+            })
+        }
+
+        for (let i = 0; i < characteristics_and_skills.length; i++) {
+            if (characteristics_and_skills[i] in characteristicList) {
+                await knexInstance('characters').where('id', insertedRow[0]).update(characteristicList[characteristics_and_skills[i]].name, numbers[i]);
+            }
+
+            if (characteristics_and_skills[i] in skillList) {
+                await knexInstance(skillList[characteristics_and_skills[i]].group).where('character_id', insertedRow[0]).update(skillList[characteristics_and_skills[i]].name, numbers[i]);
+            }
+        }
+
+        const dex = parseInt(numbers[characteristics_and_skills.findIndex(e => e === '敏捷')]);
+        const str = parseInt(numbers[characteristics_and_skills.findIndex(e => e === '力量')]);
+        const siz = parseInt(numbers[characteristics_and_skills.findIndex(e => e === '体型')]);
+        const mov = ((): number => {
+            if (dex < siz && str < siz) {
+                return 7;
+            } else if (dex > siz && str > siz) {
+                return 9;
+            } else {
+                return 8;
+            }
+        })();
+        await knexInstance('characters').where('id', insertedRow[0]).update('mov', mov);
+
+        await e.reply('刀客塔，您的数据已经成功储存！');
     }
 })
 
-function setUpSkills(character: ICharacter, skills: string[], numbers: string[]): string {
-    const skillLength = skills.length;
-    const numberLength = numbers.length;
-    if (skillLength === numberLength) {
-        let reply = '设置参数成功:';
-
-        for (let i = 0; i < skillLength; i++) {
-            setUpSkill(character, skills[i], parseInt(numbers[i]));
-            reply += `\n${skills[i]}:${numbers[i]}`;
-        }
-
-        return reply;
-    }
-
-    return '抱歉博士，参数似乎并不匹配。请重新输入要分配的参数。';
+async function setCharacteristic(owner: string, characteristic: string, num: number): Promise<number> {
+    return knexInstance('characters').where('owner', owner).andWhere('enable', true).update(characteristicList[characteristic].name, num);
 }
 
-function setUpSkill(character: ICharacter, skill: string, num: number) {
-    if (isValidKey(skill, character)) {
-        character[skill] = num;
-    }
+async function setSkill(owner: string, skill: string, num: number): Promise<number> {
+    const id = (await knexInstance('characters').where('owner', owner).andWhere('enable', true).select('id'))[0]['id'];
+
+    return knexInstance(skillList[skill].group).where('character_id', id).update(skillList[skill].name, num);
 }
 
-function getSkill(character: ICharacter, skill: string): number | string {
-    if (isValidKey(skill, character)) {
-        return character[skill];
-    } else {
-        return '没有这项属性';
-    }
+async function getCharacteristic(owner: string, characteristic: string): Promise<number> {
+    const result = await knexInstance('characters').where('owner', owner).andWhere('enable', true).select(characteristicList[characteristic].name);
+
+    return result[0][characteristicList[characteristic].name];
 }
 
-function isValidKey(key: string, object: ICharacter): key is keyof typeof object {
-    return key in object;
+async function getSkill(owner: string, skill: string): Promise<number> {
+    const id = (await knexInstance('characters').where('owner', owner).andWhere('enable', true).select('id'))[0]['id'];
+    const result = await knexInstance(skillList[skill].group).where('character_id', id).select(skillList[skill].name);
+
+    return result[0][skillList[skill].name];
 }
 
-function initialize() {
-    fs.access(playersData, fs.constants.F_OK, (err) => {
-        if (err)
-            fs.writeFile(playersData, '{}', (err) => {
-                if (err) {
-                    throw err;
+async function initialize() {
+    const exists = await knexInstance.schema.hasTable('characters');
+
+    if (!exists) {
+        try {
+            await knexInstance.schema.createTable('characters', (table) => {
+                table.increments('id');
+                table.string('owner');
+                table.boolean('enable');
+                table.string('name');
+                table.integer('mov').unsigned();
+                for (const characteristic in characteristicList) {
+                    table.integer(characteristicList[characteristic].name).unsigned();
                 }
             });
 
-        fs.readFile(playersData, 'utf-8', (err, data) => {
-            if (err) {
-                throw err;
+            for (const group of skillGroups) {
+                await knexInstance.schema.createTable(group, (table) => {
+                    table.increments('id');
+                    table.integer('character_id').references('id').inTable('characters');
+                    for (const skill in skillList) {
+                        if (skillList[skill].group === group) {
+                            table.integer(skillList[skill].name).unsigned();
+                        }
+                    }
+                });
             }
-
-            players = JSON.parse(data.toString());
-        });
-    });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }
 
-interface ICharacter {
-    hp: number;
-    san: number;
-    magic: number;
-    mov: number;
-    力量: number;
-    体质: number;
-    体型: number;
-    敏捷: number;
-    外貌: number;
-    智力: number;
-    意志: number;
-    教育: number;
-    幸运: number;
+interface SkillList {
+    [key: string]: Skill;
 }
 
-interface IPlayers {
-    [key: string]: ICharacter[]
+interface CharacteristicList {
+    [key: string]: Characteristic;
 }
+
+interface Skill extends Characteristic {
+    group: string;
+}
+
+interface Characteristic {
+    name: string;
+}
+
+export {getSkill, setSkill, getCharacteristic, setCharacteristic, skillList, characteristicList};

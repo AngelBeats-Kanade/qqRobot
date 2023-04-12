@@ -5,7 +5,7 @@ import { bot } from './plugin-bot.js';
 bot.on('request.friend.add', async function (e) {
 	// 同意
 	await this.setFriendAddRequest(e.flag);
-	this.sendPrivateMsg(e.user_id, '我们已经是好友啦，一起来聊天吧！');
+	await this.sendPrivateMsg(e.user_id, '我们已经是好友啦，一起来聊天吧！');
 	// 拒绝
 	// this.setFriendAddRequest(e.flag, false);
 });
@@ -14,7 +14,7 @@ bot.on('request.friend.add', async function (e) {
 bot.on('request.group.invite', async function (e) {
 	// 同意
 	await this.setGroupAddRequest(e.flag);
-	this.sendGroupMsg(e.group_id, '大家好，我是' + this.nickname);
+	await this.sendGroupMsg(e.group_id, '大家好，我是' + this.nickname);
 	// 拒绝
 	// this.setGroupAddRequest(e.flag, false);
 });
@@ -23,7 +23,7 @@ bot.on('request.group.invite', async function (e) {
 bot.on('request.group.add', async function (e) {
 	// 同意
 	await this.setGroupAddRequest(e.flag);
-	this.sendGroupMsg(e.group_id, [
+	await this.sendGroupMsg(e.group_id, [
 		'欢迎 ',
 		segment.at(e.user_id),
 		' 入群'
