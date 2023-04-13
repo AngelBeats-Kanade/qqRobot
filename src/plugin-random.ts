@@ -269,37 +269,47 @@ function onRollDiceOnce(number: string, hide: boolean): string {
 }
 
 async function onRollAction(name: string, id: number, command: string): Promise<string> {
-    const number = command.substring(4);
-    const skill = command.substring(4).replace(/\d|\+|-/ig, '');
+    const sCommand = command.substring(4);
+    const skill = sCommand.replace(/\d|\+|-|\s/ig, '');
     const randomNum = getRandomIntInclusive(1, 100);
     let flexNum: number = 0;
-    let measureNum = parseInt(number.replace(/\D/ig, ''));
+    let measureNum: number;
     let bigFailureNum = 96;
     let replyWords = '成功';
     let reply: string;
+    let success: boolean = true;
 
+    if (sCommand.includes('+') || sCommand.includes('-')) {
+        if (sCommand.includes('+')) {
+            flexNum = parseInt(sCommand.split('+')[1]);
+            measureNum = parseInt(sCommand.split('+')[0].replace(/\D/ig, ''));
+        } else {
+            //把flexNum的值变成负数，下面就只需要直接把measureNum的值加上flexNum
+            flexNum = parseInt('-' + sCommand.split('-')[1]);
+            measureNum = parseInt(sCommand.split('-')[0].replace(/\D/ig, ''));
+            console.log(flexNum);
+            console.log(measureNum);
+        }
+    } else {
+        measureNum = parseInt(sCommand.replace(/\D/ig, ''));
+    }
+
+    //如果没有包含数字，是直接使用简化卡的技能数值，那就得不到measureNum,需要去数据库中查找
     if (Number.isNaN(measureNum)) {
         if (skill in characteristicList) {
             measureNum = await getCharacteristic(id.toString(), skill);
         } else if (skill in skillList) {
             measureNum = await getSkill(id.toString(), skill);
+        } else {
+            success = false;
         }
     }
-    if (!Number.isNaN(measureNum)) {
-        if (number.indexOf('+') != -1) {
-            flexNum = parseInt(number.split('+')[1]);
-            measureNum = parseInt(number.split('+')[0].replace(/\D/ig, ''));
-            measureNum += flexNum;
-        }
 
-        if (number.indexOf('-') != -1) {
-            flexNum = parseInt(number.split('-')[1]);
-            measureNum = parseInt(number.split("-")[0].replace(/\D/ig, ''));
-            measureNum -= flexNum;
-        }
-
-        if ((measureNum - flexNum) >= 60)
+    if (success) {
+        if (measureNum >= 60)
             bigFailureNum = 100;
+
+        measureNum += flexNum;
 
         if (measureNum < randomNum) {
             replyWords = '失败';
@@ -323,7 +333,7 @@ async function onRollAction(name: string, id: number, command: string): Promise<
 }
 
 function onName(tags: string): string {
-    const num = parseInt(tags.replace(/[^\d|^\.|^\-]/ig, ''));
+    const num = parseInt(tags.replace(/[^\d|^.\-]/ig, ''));
     let reply: string;
     let names: INames = {};
 
