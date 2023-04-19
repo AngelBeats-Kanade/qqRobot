@@ -8,9 +8,9 @@ const password = readlineSync.question('What is your password?\nPassword: ', {
 
 const bot = createClient(parseInt(account));
 
-bot.on("system.login.slider", function () {
-    console.log("输入ticket：")
-    process.stdin.once("data", ticket => this.submitSlider(String(ticket).trim()))
+bot.on('system.login.slider', function () {
+    console.log('输入ticket：')
+    process.stdin.once('data', ticket => this.submitSlider(String(ticket).trim()))
 }).login(password);
 
 export { bot };
