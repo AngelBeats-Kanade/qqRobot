@@ -1,9 +1,9 @@
-import {segment} from 'oicq';
-import {bot} from './plugin-bot.js';
+import { segment } from 'icqq';
+import { bot } from './plugin-bot.js';
 import * as schedule from 'node-schedule';
 import mock from 'mockjs';
 import * as fs from 'fs';
-import {getSkill, getCharacteristic, skillList, characteristicList} from './plugin-setUpCharacters.js';
+import { getSkill, getCharacteristic, skillList, characteristicList } from './plugin-setUpCharacters.js';
 
 const random = mock.Random;
 let dataJson: IDataJson = {};
@@ -68,7 +68,7 @@ bot.on('message', async function (e) {
             );
         } else {
             reply = onRollDice(frequency, number, true);
-            await this.sendPrivateMsg(id, reply);
+            await bot.sendPrivateMsg(id, reply);
         }
     }
 
@@ -110,7 +110,7 @@ bot.on('message', async function (e) {
                 reply = '刀客塔，请在输入命令后添加空格哦！';
         }
 
-        await this.sendPrivateMsg(id, reply);
+        await bot.sendPrivateMsg(id, reply);
     }
 
     if (e.raw_message.startsWith('。ra') || e.raw_message.startsWith('.ra')) {

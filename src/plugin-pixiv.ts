@@ -1,6 +1,8 @@
-import {DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment} from 'oicq';
+import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent, segment } from 'icqq';
 import fetch from 'node-fetch';
-import {bot} from './plugin-bot.js';
+import { bot } from './plugin-bot.js';
+
+const url_prefix = 'https://pixiv-ab.site';
 
 bot.on('message', async function (e) {
     if (e.raw_message === '来点二次元') {
@@ -72,7 +74,7 @@ async function onDailyPictureAsync(e: PrivateMessageEvent | GroupMessageEvent | 
 
 async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
     const tagList = typeof tag === 'string' ? tag : tag.join(' ');
-    const url = r18 ? `https://pixiv-ab.tk/api/Pixiv/r18/tag/${tagList}` : `https://pixiv-ab.tk/api/Pixiv/daily/tag/${tagList}`;
+    const url = r18 ? `${url_prefix}/api/Pixiv/r18/tag/${tagList}` : `${url_prefix}/api/Pixiv/daily/tag/${tagList}`;
     const response = await fetch(url);
     if (response.status === 200) {
         const promise = await response.json();
@@ -83,7 +85,7 @@ async function fetchPictureByTagAsync(tag: string | string[], r18: boolean) {
 }
 
 async function fetchPictureByRandomAsync(r18: boolean) {
-    const url = r18 ? `https://pixiv-ab.tk/api/Pixiv/r18/random` : `https://pixiv-ab.tk/api/Pixiv/daily/random`;
+    const url = r18 ? `${url_prefix}/api/Pixiv/r18/random` : `${url_prefix}/api/Pixiv/daily/random`;
     const response = await fetch(url);
     const promise = await response.json();
     return await (promise as Promise<IPicture>);

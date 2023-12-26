@@ -1,4 +1,4 @@
-import { segment } from 'oicq';
+import { segment } from 'icqq';
 import { bot } from './plugin-bot.js';
 
 // 发送图片
