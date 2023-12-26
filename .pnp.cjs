@@ -36,7 +36,6 @@ const RAW_RUNTIME_STATE =
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\
           ["node-schedule", "npm:2.1.1"],\
-          ["oicq", "npm:2.3.1"],\
           ["readline-sync", "npm:1.4.10"],\
           ["typescript", "patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"]\
         ],\
@@ -211,15 +210,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:0.27.2", {\
-        "packageLocation": "../../../.yarn/berry/cache/axios-npm-0.27.2-dbe3a48aea-10c0.zip/node_modules/axios/",\
-        "packageDependencies": [\
-          ["axios", "npm:0.27.2"],\
-          ["follow-redirects", "virtual:2334cb6eeeb6b3dfd608966f28539c2de97a7f40c2b9762074181b72a63a8cdcab5646db63b491e1572f204e304748e40aff79a28dbdc8ee85d2dd16cd3803c7#npm:1.15.3"],\
-          ["form-data", "npm:4.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:1.6.2", {\
         "packageLocation": "../../../.yarn/berry/cache/axios-npm-1.6.2-2334cb6eee-10c0.zip/node_modules/axios/",\
         "packageDependencies": [\
@@ -1473,20 +1463,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["oicq", [\
-      ["npm:2.3.1", {\
-        "packageLocation": "../../../.yarn/berry/cache/oicq-npm-2.3.1-3c9e6879fd-10c0.zip/node_modules/oicq/",\
-        "packageDependencies": [\
-          ["oicq", "npm:2.3.1"],\
-          ["axios", "npm:0.27.2"],\
-          ["log4js", "npm:6.9.1"],\
-          ["long", "npm:4.0.0"],\
-          ["pngjs", "npm:6.0.0"],\
-          ["probe-image-size", "npm:7.2.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["once", [\
       ["npm:1.4.0", {\
         "packageLocation": "../../../.yarn/berry/cache/once-npm-1.4.0-ccf03ef07a-10c0.zip/node_modules/once/",\
@@ -1642,7 +1618,6 @@ const RAW_RUNTIME_STATE =
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\
           ["node-schedule", "npm:2.1.1"],\
-          ["oicq", "npm:2.3.1"],\
           ["readline-sync", "npm:1.4.10"],\
           ["typescript", "patch:typescript@npm%3A5.3.3#optional!builtin<compat/typescript>::version=5.3.3&hash=e012d7"]\
         ],\

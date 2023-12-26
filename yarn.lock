@@ -143,16 +143,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
-  dependencies:
-    follow-redirects: "npm:^1.14.9"
-    form-data: "npm:^4.0.0"
-  checksum: 76d673d2a90629944b44d6f345f01e58e9174690f635115d5ffd4aca495d99bcd8f95c590d5ccb473513f5ebc1d1a6e8934580d0c57cdd0498c3a101313ef771
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.1.2":
   version: 1.6.2
   resolution: "axios@npm:1.6.2"
@@ -514,7 +504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.15.0":
   version: 1.15.3
   resolution: "follow-redirects@npm:1.15.3"
   peerDependenciesMeta:
@@ -1208,19 +1198,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oicq@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "oicq@npm:2.3.1"
-  dependencies:
-    axios: "npm:^0.27.2"
-    log4js: "npm:^6.3.0"
-    long: "npm:^4.0.0"
-    pngjs: "npm:^6.0.0"
-    probe-image-size: "npm:^7.2.2"
-  checksum: 9479c60f414c1bb4278703291944664fad217ac1e81ae0e5c4244f875d859f6f8d51b2839953589fbabe5dab9c8815c8d141defc98ec95e438b8ad33fc6838c6
-  languageName: node
-  linkType: hard
-
 "once@npm:^1.3.1, once@npm:^1.4.0":
   version: 1.4.0
   resolution: "once@npm:1.4.0"
@@ -1358,7 +1335,6 @@ __metadata:
     mockjs: "npm:^1.1.0"
     node-fetch: "npm:^3.3.2"
     node-schedule: "npm:^2.1.1"
-    oicq: "npm:^2.3.1"
     readline-sync: "npm:^1.4.10"
     typescript: "npm:^5.3.3"
   languageName: unknown
