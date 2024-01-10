@@ -30,11 +30,11 @@ bot.on('system.login.device', (e) => {
 
         bot.submitSmsCode(sms_code.toString().trim());
     } else {
-        console.log('扫码完成后回车继续：' + e.url);
+        const data = readlineSync.question('扫码完成后回车继续：' + e.url);
 
-        process.stdin.once('data', () => {
+        if (data !== null) {
             bot.login();
-        });
+        }
     }
 });
 bot.login(parseInt(account), password);
