@@ -27,11 +27,11 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@types/mockjs", "npm:1.0.10"],\
-          ["@types/node", "npm:20.10.5"],\
+          ["@types/node", "npm:20.10.8"],\
           ["@types/node-schedule", "npm:2.1.5"],\
           ["@types/readline-sync", "npm:1.4.8"],\
           ["better-sqlite3", "npm:9.2.2"],\
-          ["icqq", "npm:0.6.6"],\
+          ["icqq", "npm:0.6.7"],\
           ["knex", "virtual:80a7dd74c709977796b1a5615cac0f1b214c34523c307eb9876716c74cc29672e432e9a3d6a4f2d5f051d84155fcc69a378923747fca9f940f44b7d7f9ed284c#npm:3.1.0"],\
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\
@@ -113,6 +113,14 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-20.10.5-9464a4540b-10c0.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:20.10.5"],\
+          ["undici-types", "npm:5.26.5"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:20.10.8", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-20.10.8-99e3cc8ac5-10c0.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:20.10.8"],\
           ["undici-types", "npm:5.26.5"]\
         ],\
         "linkType": "HARD"\
@@ -877,10 +885,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["icqq", [\
-      ["npm:0.6.6", {\
-        "packageLocation": "../../../.yarn/berry/cache/icqq-npm-0.6.6-f825785c41-10c0.zip/node_modules/icqq/",\
+      ["npm:0.6.7", {\
+        "packageLocation": "../../../.yarn/berry/cache/icqq-npm-0.6.7-b32d5dca67-10c0.zip/node_modules/icqq/",\
         "packageDependencies": [\
-          ["icqq", "npm:0.6.6"],\
+          ["icqq", "npm:0.6.7"],\
           ["axios", "npm:1.6.2"],\
           ["log4js", "npm:6.9.1"],\
           ["long", "npm:4.0.0"],\
@@ -1609,11 +1617,11 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["qq-robot", "workspace:."],\
           ["@types/mockjs", "npm:1.0.10"],\
-          ["@types/node", "npm:20.10.5"],\
+          ["@types/node", "npm:20.10.8"],\
           ["@types/node-schedule", "npm:2.1.5"],\
           ["@types/readline-sync", "npm:1.4.8"],\
           ["better-sqlite3", "npm:9.2.2"],\
-          ["icqq", "npm:0.6.6"],\
+          ["icqq", "npm:0.6.7"],\
           ["knex", "virtual:80a7dd74c709977796b1a5615cac0f1b214c34523c307eb9876716c74cc29672e432e9a3d6a4f2d5f051d84155fcc69a378923747fca9f940f44b7d7f9ed284c#npm:3.1.0"],\
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\

@@ -6,7 +6,7 @@ const password = readlineSync.question('What is your password?\nPassword: ', {
     hideEchoBack: true
 });
 
-const bot = createClient({ ver: '8.9.63', sign_api_addr: `https://ray.pixiv-ab.site/sign/` });
+const bot = createClient({ ver: '8.9.78', sign_api_addr: `https://ray.pixiv-ab.site/qsign/sign?key=114514` });
 
 bot.on('system.login.slider', (e) => {
     console.log('输入滑块地址获取的ticket后继续。\n滑块地址:    ' + e.url);
