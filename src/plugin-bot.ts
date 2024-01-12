@@ -1,8 +1,12 @@
 import { createClient } from 'icqq';
 import readlineSync from 'readline-sync';
 
-const account = readlineSync.question('May I have your account?\nAccount: ');
-const password = readlineSync.question('What is your password?\nPassword: ', {
+const args = process.argv.slice(2);
+const hasAccount = ((args.indexOf('account') !== -1) && (args[args.indexOf('account') + 1] !== undefined));
+const hasPassword = ((args.indexOf('password') !== -1) && (args[args.indexOf('password') + 1] !== undefined));
+
+const account = hasAccount ? args[args.indexOf('account') + 1] : readlineSync.question('May I have your account?\nAccount: ');
+const password = hasPassword ? args[args.indexOf('password') + 1] : readlineSync.question('What is your password?\nPassword: ', {
     hideEchoBack: true
 });
 
