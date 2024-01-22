@@ -73,12 +73,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.10.8":
-  version: 20.10.8
-  resolution: "@types/node@npm:20.10.8"
+"@types/node@npm:^20.11.5":
+  version: 20.11.5
+  resolution: "@types/node@npm:20.11.5"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 93268c33c3bf0194427d696658160c77ab8661aa57107df5b248ff952898a372bf92cf0ba7fc07788fa35e59c69b6619cce63d45e4e67fca806e37da7ea42512
+  checksum: 6d18cec852f5cfbed3ec42b5c01c026e7a3f9da540d6e3d6738d4cee9979fb308cf27b6df7ba40a6553e7bc82e678f0ef53ba6e6ad52e5b86bd97b7783c2a42c
   languageName: node
   linkType: hard
 
@@ -177,14 +177,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^9.2.2":
-  version: 9.2.2
-  resolution: "better-sqlite3@npm:9.2.2"
+"better-sqlite3@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "better-sqlite3@npm:9.3.0"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: b4bfe142ba4544a0cc76b2ca03d89bce1acf3fe8a86a1ba317a4049b26bf8fed70fb413f6317d2e5abeb97e31b177accb6d09619fdc0531e891cee112e2aade1
+  checksum: 08943620079dd3f7de7e12a7cb63b9a6ca5b399ca3e06363f120b2589c86cadef2eca56558243bfaf930fb28b4d956ab0b3910bc8b09a35276670efe7b7c516c
   languageName: node
   linkType: hard
 
@@ -693,9 +693,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"icqq@npm:^0.6.7":
-  version: 0.6.7
-  resolution: "icqq@npm:0.6.7"
+"icqq@npm:^0.6.8":
+  version: 0.6.8
+  resolution: "icqq@npm:0.6.8"
   dependencies:
     axios: "npm:^1.1.2"
     log4js: "npm:^6.3.0"
@@ -703,7 +703,7 @@ __metadata:
     pngjs: "npm:^6.0.0"
     probe-image-size: "npm:^7.2.2"
     triptrap: "npm:^0.0.17"
-  checksum: d1fa48196324e0200f274c2bdf01f554ca35ba4fa4c5bf3f2099ad76587ecba13dffb450ba6cf6ef01c6c249c1e70b4dd0a74c7ea5c9ca19ca42dfd14282d99d
+  checksum: 5f524dac486e3d8750c35be270a1c019b383dfcaeaafc479b4c5f0bcca9106dd37ab374a4b1602be61e1bf4bda51469b2681543b9b68c431b18085f324d3d3f6
   languageName: node
   linkType: hard
 
@@ -1335,11 +1335,11 @@ __metadata:
   resolution: "qq-robot@workspace:."
   dependencies:
     "@types/mockjs": "npm:^1.0.10"
-    "@types/node": "npm:^20.10.8"
+    "@types/node": "npm:^20.11.5"
     "@types/node-schedule": "npm:^2.1.5"
     "@types/readline-sync": "npm:^1.4.8"
-    better-sqlite3: "npm:^9.2.2"
-    icqq: "npm:^0.6.7"
+    better-sqlite3: "npm:^9.3.0"
+    icqq: "npm:^0.6.8"
     knex: "npm:^3.1.0"
     mockjs: "npm:^1.1.0"
     node-fetch: "npm:^3.3.2"
