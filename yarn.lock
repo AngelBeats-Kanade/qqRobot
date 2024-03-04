@@ -55,12 +55,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-schedule@npm:^2.1.5":
-  version: 2.1.5
-  resolution: "@types/node-schedule@npm:2.1.5"
+"@types/node-schedule@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "@types/node-schedule@npm:2.1.6"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 4b079b7f386a63c2571e5ba3710f98df095f5a5025d7b0ac3afe4d365023e1b94bd2d608e7b30ad5b31a3e23e8bc78c29ce9f2d58f2df01c052f774446c8d87c
+  checksum: 5b8f810abf1738f4114c771434ebd17b6ec4f5e29d9f4ca4085b7b5d016f88dd6d99c7fa5c9e0d8583a52781e7ab579f34adfd6927071aa03168b44d9d75e7fd
   languageName: node
   linkType: hard
 
@@ -73,12 +73,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.11.5":
-  version: 20.11.5
-  resolution: "@types/node@npm:20.11.5"
+"@types/node@npm:^20.11.24":
+  version: 20.11.24
+  resolution: "@types/node@npm:20.11.24"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 6d18cec852f5cfbed3ec42b5c01c026e7a3f9da540d6e3d6738d4cee9979fb308cf27b6df7ba40a6553e7bc82e678f0ef53ba6e6ad52e5b86bd97b7783c2a42c
+  checksum: 5a62225eb4797b41e6953f9c08c4611d607b5422ddd153312fc81ed6ed37115228ae27e3e3caa1a3bf52d88310306a196ba1cfbd8b2ec918a20f64d80dfa22c9
   languageName: node
   linkType: hard
 
@@ -177,14 +177,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-sqlite3@npm:^9.3.0":
-  version: 9.3.0
-  resolution: "better-sqlite3@npm:9.3.0"
+"better-sqlite3@npm:^9.4.3":
+  version: 9.4.3
+  resolution: "better-sqlite3@npm:9.4.3"
   dependencies:
     bindings: "npm:^1.5.0"
     node-gyp: "npm:latest"
     prebuild-install: "npm:^7.1.1"
-  checksum: 08943620079dd3f7de7e12a7cb63b9a6ca5b399ca3e06363f120b2589c86cadef2eca56558243bfaf930fb28b4d956ab0b3910bc8b09a35276670efe7b7c516c
+  checksum: efc8b1440388ff0ada7bd1d41021dd5a5a9cfa440d3e66a661e3f89c8d72229de939887aa0a9b24695843f88710ff79b34c5990aaf951b55a00858801a3b134c
   languageName: node
   linkType: hard
 
@@ -693,17 +693,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"icqq@npm:^0.6.8":
-  version: 0.6.8
-  resolution: "icqq@npm:0.6.8"
+"icqq@npm:^0.6.10":
+  version: 0.6.10
+  resolution: "icqq@npm:0.6.10"
   dependencies:
     axios: "npm:^1.1.2"
     log4js: "npm:^6.3.0"
     long: "npm:^4.0.0"
     pngjs: "npm:^6.0.0"
     probe-image-size: "npm:^7.2.2"
+    silk-wasm: "npm:^3.2.2"
     triptrap: "npm:^0.0.17"
-  checksum: 5f524dac486e3d8750c35be270a1c019b383dfcaeaafc479b4c5f0bcca9106dd37ab374a4b1602be61e1bf4bda51469b2681543b9b68c431b18085f324d3d3f6
+  checksum: 9ac5dd981431e503e8d6cd980d620d0969b088e49972de9aeb7ec0acea57f02d7261e3bc12c53e71ab7fc3546d6438e6ce917b9972c9727b678347130ead9745
   languageName: node
   linkType: hard
 
@@ -1335,11 +1336,11 @@ __metadata:
   resolution: "qq-robot@workspace:."
   dependencies:
     "@types/mockjs": "npm:^1.0.10"
-    "@types/node": "npm:^20.11.5"
-    "@types/node-schedule": "npm:^2.1.5"
+    "@types/node": "npm:^20.11.24"
+    "@types/node-schedule": "npm:^2.1.6"
     "@types/readline-sync": "npm:^1.4.8"
-    better-sqlite3: "npm:^9.3.0"
-    icqq: "npm:^0.6.8"
+    better-sqlite3: "npm:^9.4.3"
+    icqq: "npm:^0.6.10"
     knex: "npm:^3.1.0"
     mockjs: "npm:^1.1.0"
     node-fetch: "npm:^3.3.2"
@@ -1489,6 +1490,13 @@ __metadata:
   version: 4.1.0
   resolution: "signal-exit@npm:4.1.0"
   checksum: 41602dce540e46d599edba9d9860193398d135f7ff72cab629db5171516cfae628d21e7bfccde1bbfdf11c48726bc2a6d1a8fb8701125852fbfda7cf19c6aa83
+  languageName: node
+  linkType: hard
+
+"silk-wasm@npm:^3.2.2":
+  version: 3.2.3
+  resolution: "silk-wasm@npm:3.2.3"
+  checksum: bb332cbed296411bad47ae38a1247d279319001d8bb256f9b252b80e885aab10bc105e8c5652269481fd7bcf8b6fdfec78c09bbfe6ccd70c6029fe060f61cdbf
   languageName: node
   linkType: hard
 

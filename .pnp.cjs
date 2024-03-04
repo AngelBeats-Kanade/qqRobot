@@ -27,11 +27,11 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@types/mockjs", "npm:1.0.10"],\
-          ["@types/node", "npm:20.11.5"],\
-          ["@types/node-schedule", "npm:2.1.5"],\
+          ["@types/node", "npm:20.11.24"],\
+          ["@types/node-schedule", "npm:2.1.6"],\
           ["@types/readline-sync", "npm:1.4.8"],\
-          ["better-sqlite3", "npm:9.3.0"],\
-          ["icqq", "npm:0.6.8"],\
+          ["better-sqlite3", "npm:9.4.3"],\
+          ["icqq", "npm:0.6.10"],\
           ["knex", "virtual:80a7dd74c709977796b1a5615cac0f1b214c34523c307eb9876716c74cc29672e432e9a3d6a4f2d5f051d84155fcc69a378923747fca9f940f44b7d7f9ed284c#npm:3.1.0"],\
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\
@@ -117,20 +117,20 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:20.11.5", {\
-        "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-20.11.5-b807d46a1a-10c0.zip/node_modules/@types/node/",\
+      ["npm:20.11.24", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-node-npm-20.11.24-4e19eedf98-10c0.zip/node_modules/@types/node/",\
         "packageDependencies": [\
-          ["@types/node", "npm:20.11.5"],\
+          ["@types/node", "npm:20.11.24"],\
           ["undici-types", "npm:5.26.5"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@types/node-schedule", [\
-      ["npm:2.1.5", {\
-        "packageLocation": "../../../.yarn/berry/cache/@types-node-schedule-npm-2.1.5-86263e531a-10c0.zip/node_modules/@types/node-schedule/",\
+      ["npm:2.1.6", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-node-schedule-npm-2.1.6-8b4ad963b7-10c0.zip/node_modules/@types/node-schedule/",\
         "packageDependencies": [\
-          ["@types/node-schedule", "npm:2.1.5"],\
+          ["@types/node-schedule", "npm:2.1.6"],\
           ["@types/node", "npm:20.10.5"]\
         ],\
         "linkType": "HARD"\
@@ -248,10 +248,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["better-sqlite3", [\
-      ["npm:9.3.0", {\
-        "packageLocation": "./.yarn/unplugged/better-sqlite3-npm-9.3.0-2ce8f89306/node_modules/better-sqlite3/",\
+      ["npm:9.4.3", {\
+        "packageLocation": "./.yarn/unplugged/better-sqlite3-npm-9.4.3-9f671fc326/node_modules/better-sqlite3/",\
         "packageDependencies": [\
-          ["better-sqlite3", "npm:9.3.0"],\
+          ["better-sqlite3", "npm:9.4.3"],\
           ["bindings", "npm:1.5.0"],\
           ["node-gyp", "npm:10.0.1"],\
           ["prebuild-install", "npm:7.1.1"]\
@@ -885,15 +885,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["icqq", [\
-      ["npm:0.6.8", {\
-        "packageLocation": "../../../.yarn/berry/cache/icqq-npm-0.6.8-5ba547ebee-10c0.zip/node_modules/icqq/",\
+      ["npm:0.6.10", {\
+        "packageLocation": "../../../.yarn/berry/cache/icqq-npm-0.6.10-c41c645048-10c0.zip/node_modules/icqq/",\
         "packageDependencies": [\
-          ["icqq", "npm:0.6.8"],\
+          ["icqq", "npm:0.6.10"],\
           ["axios", "npm:1.6.2"],\
           ["log4js", "npm:6.9.1"],\
           ["long", "npm:4.0.0"],\
           ["pngjs", "npm:6.0.0"],\
           ["probe-image-size", "npm:7.2.3"],\
+          ["silk-wasm", "npm:3.2.3"],\
           ["triptrap", "npm:0.0.17"]\
         ],\
         "linkType": "HARD"\
@@ -1046,7 +1047,7 @@ const RAW_RUNTIME_STATE =
           ["@types/pg-native", null],\
           ["@types/sqlite3", null],\
           ["@types/tedious", null],\
-          ["better-sqlite3", "npm:9.3.0"],\
+          ["better-sqlite3", "npm:9.4.3"],\
           ["colorette", "npm:2.0.19"],\
           ["commander", "npm:10.0.1"],\
           ["debug", "virtual:4b12ba5111caf7e8338099bdbc7cb046a9f8e079a44e74d0c03dca469876e3071ebbe671c5e90ae6b78ae33e22c205fa5ed32169a4aabd1404b13c56d09986e1#npm:4.3.4"],\
@@ -1617,11 +1618,11 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["qq-robot", "workspace:."],\
           ["@types/mockjs", "npm:1.0.10"],\
-          ["@types/node", "npm:20.11.5"],\
-          ["@types/node-schedule", "npm:2.1.5"],\
+          ["@types/node", "npm:20.11.24"],\
+          ["@types/node-schedule", "npm:2.1.6"],\
           ["@types/readline-sync", "npm:1.4.8"],\
-          ["better-sqlite3", "npm:9.3.0"],\
-          ["icqq", "npm:0.6.8"],\
+          ["better-sqlite3", "npm:9.4.3"],\
+          ["icqq", "npm:0.6.10"],\
           ["knex", "virtual:80a7dd74c709977796b1a5615cac0f1b214c34523c307eb9876716c74cc29672e432e9a3d6a4f2d5f051d84155fcc69a378923747fca9f940f44b7d7f9ed284c#npm:3.1.0"],\
           ["mockjs", "npm:1.1.0"],\
           ["node-fetch", "npm:3.3.2"],\
@@ -1776,6 +1777,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/signal-exit-npm-4.1.0-61fb957687-10c0.zip/node_modules/signal-exit/",\
         "packageDependencies": [\
           ["signal-exit", "npm:4.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["silk-wasm", [\
+      ["npm:3.2.3", {\
+        "packageLocation": "../../../.yarn/berry/cache/silk-wasm-npm-3.2.3-8d2b44176e-10c0.zip/node_modules/silk-wasm/",\
+        "packageDependencies": [\
+          ["silk-wasm", "npm:3.2.3"]\
         ],\
         "linkType": "HARD"\
       }]\
